@@ -1,0 +1,8 @@
+rewards:
+  "1000":
+    item: DIAMOND
+    amount: 5
+  "5000":
+    money: 1000
+  "10000":
+    command: "give {player} enchanted_golden_apple 3"

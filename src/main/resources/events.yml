@@ -1,0 +1,8 @@
+event:
+  kills_comptetion:
+    enabled: true
+    name: "Competição de Kills"  # Nome do evento
+    duration_seconds: 600        # Duração do evento em segundos (exemplo: 10 minutos)
+    reward_points: 1000          # Pontos de recompensa para o vencedor
+    min_delay_between_events: 1800 # Delay mínimo entre eventos em segundos (30 minutos)
+

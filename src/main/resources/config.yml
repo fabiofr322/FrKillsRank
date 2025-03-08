@@ -1,0 +1,79 @@
+settings:
+  points:
+    ZOMBIE: 5
+    SKELETON: 7
+    CREEPER: 10
+    ENDERMAN: 15
+    WITHER: 100
+  messages:
+    kill: "&aVocê ganhou {points} pontos! Total: {total_points}"
+    reload: "&eConfiguração recarregada com sucesso!"
+    not_enough_points: "&cVocê não tem pontos suficientes!"
+    shop_purchase: "&aVocê comprou {item} por {cost} pontos!"
+    only_players: "&cApenas jogadores podem usar este comando!"
+    points_info: "&aVocê possui {points} pontos."
+    no_data: "&cNenhum dado encontrado."
+    rank_message: "&aSeu rank é: {rank}º, com {points} pontos."
+    top_header: "&6=== Top 10 Jogadores ==="
+    top_player: "&a{position}º - {player}: {points} pontos"
+    points_shop: "&eLoja de pontos em desenvolvimento."
+    permission_denied: "&cVocê não tem permissão para executar esse comando!"
+    # Mensagens para os comandos de ADICIONAR pontos
+    addpoints_usage: "&cUso: /addpoints <player> <amount>"
+    addpoints_success: "&aAdicionado {points} pontos para {player}."
+    points_added: "&aVocê recebeu {points} pontos."
+    # Mensagens para os comandos de REMOVER pontos
+    removepoints_usage: "&cUso: /removepoints <player> <amount>"
+    removepoints_success: "&aRemovido {points} pontos de {player}."
+    removepoints_insufficient: "&cO jogador {player} não possui pontos suficientes para remover {points}."
+    points_removed: "&cForam removidos {points} pontos de você."
+    # Mensagens de missões:
+    missions_header_daily: "&6=== Missões Diárias ==="
+    missions_none_daily: "&cNenhuma missão diária disponível."
+    missions_header_weekly: "&6=== Missões Semanais ==="
+    missions_none_weekly: "&cNenhuma missão semanal disponível."
+    missions_format: "&a{mission} - Mate {amount} de {target} para receber {reward} pontos."
+    #events
+    #competition kills
+    event_start: "&aEvento {event_name} iniciado! Mate o máximo de mobs possível!"
+    event_end: "&eEvento {event_name} encerrado! {player} venceu com {kills} kills e ganhou {reward} pontos!"
+    event_end_no_winner: "&eEvento {event_name} encerrado! Nenhum participante."
+    event_active: "&eEvento {event_name} ativo! Ninguém registrou kills ainda."
+    event_leader: "&eEvento {event_name} ativo! Atual líder: {player} com {kills} kills."
+  scoreboard:
+    title: "&6&lKillsRank"
+    rank: "&6🏆 Rank: &a%rank%"
+    kills: "&c💀 Kills: &f%kills%"
+    points: "&e⭐ Pontos: %points%"
+    position: "&b📌 Posição: &a#%position%"
+  rewards:
+    gui_title: "&6Recompensas Disponíveis"
+    item_display: "&aRecompensa por {points} pontos!"
+    item_lore:
+      - "&eClique para resgatar!"
+    claimed_message: "&aRecompensa resgatada!"
+    no_reward: "&cNenhuma recompensa disponível para essa pontuação!"
+    item_reward: "&aVocê recebeu {amount}x {item}!"
+    money_reward: "&aVocê recebeu ${money}!"
+    command_reward: "&aVocê recebeu uma recompensa especial!"
+  gui:
+    main_title: "&6FrKillsRank Menu"
+    player_head_name: "&aSeu Perfil"
+    player_head_lore:
+      - "Rank: {rank}"
+      - "Pontos: {points}"
+    rewards_item_name: "&bRecompensas"
+    rewards_item_lore:
+      - "Clique para ver as recompensas disponíveis."
+    rank_item_name: "&dRank dos Jogadores"
+    rank_item_lore:
+      - "Clique para ver seu rank e o dos demais."
+    missions_item_name: "&eMissões"
+    missions_item_lore:
+      - "Clique para ver as missões disponíveis."
+  ranks:
+    Lendário: 5000
+    Mestre: 3000
+    Guerreiro: 1000
+    Soldado: 500
+    Iniciante: 0

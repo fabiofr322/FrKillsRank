@@ -1,0 +1,38 @@
+name: FrKillsRank
+version: '1.0-SNAPSHOT'
+main: fabiofr32.frKillsRank.FrKillsRank
+api-version: '1.21'
+commands:
+  frkillsrank:
+    description: Comando principal do FrKillsRank.
+    usage: /frkillsrank <subcomando>
+    aliases: [fkr]
+  recompensas:
+    description: Abra o menu de recompensas.
+    usage: /recompensas
+  pointskills:
+    description: Mostra quantos kills o jogador já fez.
+    usage: /pointskills
+  pointsrank:
+    description: Mostra o rank do jogador.
+    usage: /pointsrank [nickname]
+  pointsranktop:
+    description: Mostra os 10 jogadores com mais pontos.
+    usage: /pointsranktop
+  addpoints:
+    description: Adiciona pontos a um jogador.
+    usage: /addpoints <player> <amount>
+  removepoints:
+    description: Remove pontos de um jogador.
+    usage: /removepoints <player> <amount>
+  missions:
+    description: Exibe as missões disponíveis.
+    usage: /missions
+  reloadkillsconfig:
+    description: Recarrega as configurações.
+    usage: /reloadkillsconfig
+    permission: frkillsrank.reloadkillsconfig
+  toggleevent:
+    description: "Ativa ou desativa manualmente o evento de competição de kills."
+    usage: /toggleevent <on|off>
+    permission: frkillsrank.toggleevent

@@ -1,0 +1,21 @@
+shop:
+  title: "&6&lLoja de Pontos"
+  items:
+    1:
+      name: "&bEspada de Diamante"
+      material: "DIAMOND_SWORD"
+      lore:
+        - "&7Uma poderosa espada de diamante."
+      price: 500
+    2:
+      name: "&6Maçã Dourada"
+      material: "GOLDEN_APPLE"
+      lore:
+        - "&7Recupere sua vida rapidamente!"
+      price: 200
+    3:
+      name: "&aTotem da Imortalidade"
+      material: "TOTEM_OF_UNDYING"
+      lore:
+        - "&7Ganhe uma segunda chance na batalha!"
+      price: 1000

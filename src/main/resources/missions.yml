@@ -1,0 +1,11 @@
+missions:
+  daily:
+    "Matar 50 Zumbis":
+      target: "ZOMBIE"
+      amount: 50
+      reward_points: 500
+  weekly:
+    "Derrotar 3 Withers":
+      target: "WITHER"
+      amount: 3
+      reward_points: 5000
