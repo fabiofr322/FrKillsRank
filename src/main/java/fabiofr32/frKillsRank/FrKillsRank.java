@@ -4,6 +4,7 @@ import fabiofr32.frKillsRank.commands.*;
 import fabiofr32.frKillsRank.events.MobKillListener;
 import fabiofr32.frKillsRank.gui.MainGUIListener;
 import fabiofr32.frKillsRank.gui.RewardsGUI;
+import fabiofr32.frKillsRank.gui.ShopGUI;
 import fabiofr32.frKillsRank.managers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,6 +23,8 @@ public final class FrKillsRank extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§a[FrKillsRank] Plugin ativado!");
         startScoreboardUpdater(); // Inicia o loop de atualização do Scoreboard
 
+        ShopManager.loadShopConfig();
+
         // Carrega as configurações do evento do events.yml
         KillCompetitionManager.loadEventConfig();
 
@@ -35,6 +38,7 @@ public final class FrKillsRank extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MobKillListener(), this);
         getServer().getPluginManager().registerEvents(new RewardsGUI(), this);
         getServer().getPluginManager().registerEvents(new MainGUIListener(),this);
+        getServer().getPluginManager().registerEvents(new ShopGUI(), this);
 
         // Registrar comandos já existentes
         getCommand("reloadkillsconfig").setExecutor(new CommandReloadConfig());
@@ -45,6 +49,7 @@ public final class FrKillsRank extends JavaPlugin {
         getCommand("addpoints").setExecutor(new CommandAddPoints());
         getCommand("removepoints").setExecutor(new CommandRemovePoints());
         getCommand("missions").setExecutor(new CommandMissions());
+        getCommand("frloja").setExecutor(new CommandShop());
 
         // Registrar o comando principal (se aplicável)
         if (getCommand("frkillsrank") == null) {
@@ -75,10 +80,13 @@ public final class FrKillsRank extends JavaPlugin {
     private void startScoreboardUpdater() {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                ScoreboardManager.updateScoreboard(player);
+                if (player.isOnline()) {
+                    ScoreboardManager.updateScoreboard(player);
+                }
             }
-        }, 0L, 100L); // Atualiza a cada 5 segundos (100 ticks)
+        }, 0L, 20);
     }
+
 
 
 }

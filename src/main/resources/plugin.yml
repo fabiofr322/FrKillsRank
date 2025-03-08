@@ -36,3 +36,11 @@ commands:
     description: "Ativa ou desativa manualmente o evento de competição de kills."
     usage: /toggleevent <on|off>
     permission: frkillsrank.toggleevent
+  frloja:
+    description: "Abre a loja de pontos"
+    usage: "/frloja"
+    permission: frkillsrank.shop
+permissions:
+  frloja.sell:
+    description: "Permite adicionar itens à loja."
+    default: op

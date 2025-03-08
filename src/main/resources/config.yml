@@ -71,6 +71,11 @@ settings:
     missions_item_name: "&eMissões"
     missions_item_lore:
       - "Clique para ver as missões disponíveis."
+  shop_gui:
+    shop_gui_title: "&6&lLoja de Pontos"
+    price_format: "&6Preço: &e{price} pontos"
+    not_enough_points: "&cVocê não tem pontos suficientes para comprar este item!"
+    purchase_success: "&aVocê comprou {item} por {price} pontos!"
   ranks:
     Lendário: 5000
     Mestre: 3000

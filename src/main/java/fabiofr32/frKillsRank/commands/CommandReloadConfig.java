@@ -1,10 +1,7 @@
 package fabiofr32.frKillsRank.commands;
 
 import fabiofr32.frKillsRank.FrKillsRank;
-import fabiofr32.frKillsRank.managers.ConfigManager;
-import fabiofr32.frKillsRank.managers.KillCompetitionManager;
-import fabiofr32.frKillsRank.managers.MissionsManager;
-import fabiofr32.frKillsRank.managers.RewardsManager;
+import fabiofr32.frKillsRank.managers.*;
 // Se existir um gerenciador para os dados dos jogadores, importe-o:
 // import fabiofr32.frKillsRank.managers.PlayerDataManager;
 import org.bukkit.ChatColor;
@@ -31,12 +28,14 @@ public class CommandReloadConfig implements CommandExecutor {
         // Recarrega o events.yml
         KillCompetitionManager.loadEventConfig();
 
+        ShopManager.reloadShopConfig();
+
 
         // Se houver um PlayerDataManager, recarregue também:
         // PlayerDataManager.loadPlayerData();
 
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                ConfigManager.getMessage("reload", null, 0)));
+                ConfigManager.getMessage("messages.reload", null, 0)));
         return true;
     }
 }

@@ -32,8 +32,8 @@ public class MobKillListener implements Listener {
             ScoreboardManager.updateScoreboard(player);
 
             // Envia mensagem ao jogador
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    ConfigManager.getMessage("kill", player, points)));
+            /*/player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    ConfigManager.getMessage("messages.kill", player, points)));*/
 
             // Registra a kill para o evento de competição
             KillCompetitionManager.recordKill(player);

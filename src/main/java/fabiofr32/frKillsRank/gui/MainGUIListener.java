@@ -41,7 +41,7 @@ public class MainGUIListener implements Listener {
                 break;
             case 14:
                 // Rank: executa o comando que mostra o rank (por exemplo, /pointsrank)
-                player.chat("/pointsrank");
+                player.chat("/pointsranktop");
                 break;
             case 16:
                 // Missões: executa o comando que mostra as missões (por exemplo, /missions)
