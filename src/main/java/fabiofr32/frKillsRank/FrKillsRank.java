@@ -2,9 +2,7 @@ package fabiofr32.frKillsRank;
 
 import fabiofr32.frKillsRank.commands.*;
 import fabiofr32.frKillsRank.events.MobKillListener;
-import fabiofr32.frKillsRank.gui.MainGUIListener;
-import fabiofr32.frKillsRank.gui.RewardsGUI;
-import fabiofr32.frKillsRank.gui.ShopGUI;
+import fabiofr32.frKillsRank.gui.*;
 import fabiofr32.frKillsRank.managers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class FrKillsRank extends JavaPlugin {
 
     private static FrKillsRank instance;
+    private MythicMobsIntegrationManager mythicMobsIntegrationManager;
 
     @Override
     public void onEnable() {
@@ -23,33 +22,36 @@ public final class FrKillsRank extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§a[FrKillsRank] Plugin ativado!");
         startScoreboardUpdater(); // Inicia o loop de atualização do Scoreboard
 
+        mythicMobsIntegrationManager = new MythicMobsIntegrationManager(this);
+        mythicMobsIntegrationManager.checkAndNotify();
+
         ShopManager.loadShopConfig();
-
-        // Carrega as configurações do evento do events.yml
         KillCompetitionManager.loadEventConfig();
-
-        // Carrega os dados dos jogadores
         PlayerDataManager.loadPlayerData();
-
-        // Carrega as missões do arquivo missions.yml
         MissionsManager.loadMissions();
 
         // Registrar eventos
         getServer().getPluginManager().registerEvents(new MobKillListener(), this);
         getServer().getPluginManager().registerEvents(new RewardsGUI(), this);
-        getServer().getPluginManager().registerEvents(new MainGUIListener(),this);
-        getServer().getPluginManager().registerEvents(new ShopGUI(), this);
+        getServer().getPluginManager().registerEvents(new MainGUIListener(), this);
+        getServer().getPluginManager().registerEvents(new ShopGUIListener(), this);
+        getServer().getPluginManager().registerEvents(new ConsumablesGUI(), this);
+        getServer().getPluginManager().registerEvents(new ArmorsGUI(), this);
+        getServer().getPluginManager().registerEvents(new SwordsGUI(), this);
+        getServer().getPluginManager().registerEvents(new SupportItemsGUI(), this);
+        getServer().getPluginManager().registerEvents(new LegendaryShopGUI(), this);
+        getServer().getPluginManager().registerEvents(new MasterShopGUI(), this);
 
         // Registrar comandos já existentes
         getCommand("reloadkillsconfig").setExecutor(new CommandReloadConfig());
         getCommand("recompensas").setExecutor(new CommandRecompensas());
         getCommand("pointskills").setExecutor(new CommandPointSkills());
-        getCommand("pointsrank").setExecutor(new CommandPointsRank());
         getCommand("pointsranktop").setExecutor(new CommandPointsRankTop());
         getCommand("addpoints").setExecutor(new CommandAddPoints());
         getCommand("removepoints").setExecutor(new CommandRemovePoints());
         getCommand("missions").setExecutor(new CommandMissions());
         getCommand("frloja").setExecutor(new CommandShop());
+        getCommand("implementmm").setExecutor(new MythicMobsCommand(this));
 
         // Registrar o comando principal (se aplicável)
         if (getCommand("frkillsrank") == null) {
@@ -59,12 +61,9 @@ public final class FrKillsRank extends JavaPlugin {
             getCommand("frkillsrank").setTabCompleter(new CommandFrKillsRank());
         }
 
-        // Inicia o evento automaticamente, se desejado:
         if (KillCompetitionManager.eventEnabled) {
             KillCompetitionManager.startEvent();
-
         }
-
     }
 
     @Override
@@ -76,7 +75,6 @@ public final class FrKillsRank extends JavaPlugin {
         return instance;
     }
 
-
     private void startScoreboardUpdater() {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -86,7 +84,4 @@ public final class FrKillsRank extends JavaPlugin {
             }
         }, 0L, 20);
     }
-
-
-
 }

@@ -72,13 +72,52 @@ settings:
     missions_item_lore:
       - "Clique para ver as missões disponíveis."
   shop_gui:
-    shop_gui_title: "&6&lLoja de Pontos"
+    categories:
+      consumables:
+        name: "&eConsumíveis"
+        lore:
+          - "&7Itens que restauram sua vida"
+          - "&7e fornecem buffs temporários."
+      armors:
+        name: "&9Armaduras"
+        lore:
+          - "&7Proteja-se com as melhores armaduras."
+      swords:
+        name: "&cEspadas"
+        lore:
+          - "&7Armas poderosas para o combate."
+      support_items:
+        name: "&aItens de Suporte"
+        lore:
+          - "&7Itens especiais para auxílio em batalha."
+    ranked_shops:
+      master:
+        name: "&dLoja dos Mestres"
+        lore:
+          - "&7Apenas jogadores com Rank Mestre"
+          - "&7podem acessar esta loja."
+      legendary:
+        name: "&6Loja dos Lendários"
+        lore:
+          - "&7Apenas jogadores com Rank Lendário"
+          - "&7podem acessar esta loja."
+    consumables:
+      title: "&6&lLoja de Consumíveis"
+    title: "&6&lLoja de Pontos"
     price_format: "&6Preço: &e{price} pontos"
     not_enough_points: "&cVocê não tem pontos suficientes para comprar este item!"
     purchase_success: "&aVocê comprou {item} por {price} pontos!"
+    close_button: "&cFechar Loja"
   ranks:
-    Lendário: 5000
-    Mestre: 3000
-    Guerreiro: 1000
-    Soldado: 500
+    Lendário: 100000
+    Mestre: 50000
+    Guerreiro: 20000
+    Soldado: 5000
     Iniciante: 0
+  mythicmobs:
+    prompt_message: "Verificamos que o MythicMobs está instalado em seu servidor. "
+    prompt_clickable: "[Clique aqui para implementar]"
+    prompt_hover: "Clique para adicionar os mobs especiais ao MythicMobs."
+    implemented: "Mobs especiais implementados e MythicMobs recarregado."
+  showMythicMobsPrompt: true
+

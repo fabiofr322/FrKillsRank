@@ -14,6 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.inventory.meta.PotionMeta;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,14 +27,31 @@ import java.util.stream.Collectors;
 public class ShopManager {
     private static FileConfiguration shopConfig;
 
+    public static void loadShopConfig() {
+        FrKillsRank plugin = FrKillsRank.getInstance();
+        File shopFile = new File(plugin.getDataFolder(), "shop.yml");
+        if (!shopFile.exists()) {
+            plugin.saveResource("shop.yml", false);
+        }
+        shopConfig = YamlConfiguration.loadConfiguration(shopFile);
+    }
+
     public static void reloadShopConfig() {
         File shopFile = new File(FrKillsRank.getInstance().getDataFolder(), "shop.yml");
-
         if (!shopFile.exists()) {
             FrKillsRank.getInstance().saveResource("shop.yml", false);
         }
-
         shopConfig = YamlConfiguration.loadConfiguration(shopFile);
+    }
+
+    public static void saveShopConfig() {
+        try {
+            File shopFile = new File(FrKillsRank.getInstance().getDataFolder(), "shop.yml");
+            shopConfig.save(shopFile);
+        } catch (Exception e) {
+            Bukkit.getLogger().severe("Erro ao salvar shop.yml!");
+            e.printStackTrace();
+        }
     }
 
     public static FileConfiguration getShopConfig() {
@@ -41,24 +61,13 @@ public class ShopManager {
         return shopConfig;
     }
 
-
-
-
-    public static void loadShopConfig() {
-        FrKillsRank plugin = FrKillsRank.getInstance();
-        File shopFile = new File(plugin.getDataFolder(), "shop.yml");
-
-        if (!shopFile.exists()) {
-            plugin.saveResource("shop.yml", false);
-        }
-
-        shopConfig = YamlConfiguration.loadConfiguration(shopFile);
-    }
-
-    public static List<ItemStack> getShopItems() {
+    /**
+     * Busca os itens da loja de uma categoria específica.
+     * Exemplo: getShopItems("consumables") para pegar os consumíveis.
+     */
+    public static List<ItemStack> getShopItems(String category) {
         List<ItemStack> items = new ArrayList<>();
-        ConfigurationSection shopSection = shopConfig.getConfigurationSection("shop.items");
-
+        ConfigurationSection shopSection = shopConfig.getConfigurationSection("shop." + category);
         if (shopSection != null) {
             for (String key : shopSection.getKeys(false)) {
                 String name = ChatColor.translateAlternateColorCodes('&', shopSection.getString(key + ".name", "Item"));
@@ -73,20 +82,20 @@ public class ShopManager {
                 if (meta != null) {
                     meta.setDisplayName(name);
 
-                    // Aplicando lore personalizada
+                    // Adiciona a lore personalizada
                     List<String> coloredLore = new ArrayList<>();
                     for (String line : lore) {
                         coloredLore.add(ChatColor.translateAlternateColorCodes('&', line));
                     }
 
-                    // Pegando o formato do preço do config.yml
+                    // Adiciona o preço ao final da lore
                     String priceFormat = ConfigManager.getSimpleMessage("settings.shop_gui.price_format");
                     priceFormat = priceFormat.replace("{price}", String.valueOf(price));
                     coloredLore.add(ChatColor.GOLD + priceFormat);
 
                     meta.setLore(coloredLore);
 
-                    // Aplicando encantamentos personalizados
+                    // Aplica encantamentos personalizados, se houver
                     if (shopSection.contains(key + ".enchantments")) {
                         List<String> enchants = shopSection.getStringList(key + ".enchantments");
                         for (String ench : enchants) {
@@ -101,7 +110,7 @@ public class ShopManager {
                         }
                     }
 
-// Aplicando atributos personalizados
+                    // Aplica atributos personalizados, se houver
                     if (shopSection.contains(key + ".attributes")) {
                         ConfigurationSection attrSection = shopSection.getConfigurationSection(key + ".attributes");
                         if (attrSection != null) {
@@ -124,30 +133,59 @@ public class ShopManager {
                         }
                     }
 
-
-                    // Definir Custom Model Data
+                    // Define Custom Model Data, se configurado
                     if (shopSection.contains(key + ".custom_model_data")) {
                         meta.setCustomModelData(shopSection.getInt(key + ".custom_model_data"));
                     }
 
-                    // Definir se o item é indestrutível
+                    // Define se o item é indestrutível
                     if (shopSection.contains(key + ".unbreakable")) {
                         meta.setUnbreakable(shopSection.getBoolean(key + ".unbreakable"));
                     }
 
                     item.setItemMeta(meta);
                 }
+
+                // Se o item for uma poção, aplica os efeitos personalizados
+                if (material == Material.POTION || material == Material.SPLASH_POTION) {
+                    applyPotionEffects(item, shopSection.getConfigurationSection(key));
+                }
+
                 items.add(item);
             }
         }
         return items;
     }
 
+    /**
+     * Aplica os efeitos de poção personalizados a um item do tipo POTION ou SPLASH_POTION.
+     * O efeito deve estar definido na seção "effects" do item no shop.yml, no formato "EFFECT:duration:amplifier".
+     * Exemplo: "SPEED:180:1" para um efeito SPEED de 180 segundos no nível 1.
+     */
+    private static void applyPotionEffects(ItemStack item, ConfigurationSection section) {
+        if (!(item.getItemMeta() instanceof PotionMeta)) return;
+        PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+        if (section != null && section.contains("effects")) {
+            List<String> effectsList = section.getStringList("effects");
+            for (String effectString : effectsList) {
+                String[] parts = effectString.split(":");
+                if (parts.length == 3) {
+                    PotionEffectType effectType = PotionEffectType.getByName(parts[0].toUpperCase());
+                    int durationSeconds = Integer.parseInt(parts[1]);
+                    int amplifier = Integer.parseInt(parts[2]);
+                    int durationTicks = durationSeconds * 20; // Converte segundos para ticks
+                    if (effectType != null) {
+                        potionMeta.addCustomEffect(new PotionEffect(effectType, durationTicks, amplifier), true);
+                    }
+                }
+            }
+        }
+        item.setItemMeta(potionMeta);
+    }
 
     public static boolean purchaseItem(Player player, ItemStack item) {
         int price = extractPrice(item);
         if (price <= 0) return false;
-
         int playerPoints = ConfigManager.getPoints(player);
         if (playerPoints < price) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&',
@@ -158,7 +196,7 @@ public class ShopManager {
         // Remove os pontos do jogador
         ConfigManager.removePoints(player, price);
 
-        // Cria uma cópia do item sem a lore do preço
+        // Cria uma cópia do item para remover a linha do preço na lore
         ItemStack itemCopy = item.clone();
         ItemMeta meta = itemCopy.getItemMeta();
         if (meta != null && meta.hasLore()) {
@@ -166,26 +204,24 @@ public class ShopManager {
             if (lore != null) {
                 lore = lore.stream()
                         .filter(line -> !line.toLowerCase().contains("preço:") && !line.toLowerCase().contains("price:"))
-                        .collect(Collectors.toList()); // Remove apenas a linha do preço
+                        .collect(Collectors.toList());
                 meta.setLore(lore);
             }
             itemCopy.setItemMeta(meta);
         }
 
-        // Adiciona o item sem preço ao inventário do jogador
+        // Adiciona o item ao inventário do jogador
         player.getInventory().addItem(itemCopy);
 
         // Mensagem de sucesso
         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 ConfigManager.getSimpleMessage("settings.shop_gui.purchase_success")
                         .replace("{item}", item.getItemMeta().getDisplayName())
-                        .replace("{price}", String.valueOf(price))
-        ));
+                        .replace("{price}", String.valueOf(price))));
         return true;
     }
 
-
-    private static int extractPrice(ItemStack item) {
+    public static int extractPrice(ItemStack item) {
         if (item.hasItemMeta() && item.getItemMeta().hasLore()) {
             for (String line : item.getItemMeta().getLore()) {
                 if (line.toLowerCase().contains("preço:") || line.toLowerCase().contains("price:")) {
@@ -203,14 +239,20 @@ public class ShopManager {
         return -1;
     }
 
-    public static void saveShopConfig() {
-        try {
-            File shopFile = new File(FrKillsRank.getInstance().getDataFolder(), "shop.yml");
-            shopConfig.save(shopFile);
-        } catch (Exception e) {
-            Bukkit.getLogger().severe("Não foi possível salvar a shop.yml!");
-            e.printStackTrace();
+    public static int getItemPriceFromConfig(String category, String itemName) {
+        ConfigurationSection shopSection = shopConfig.getConfigurationSection("shop." + category);
+        if (shopSection != null) {
+            for (String key : shopSection.getKeys(false)) {
+                String configItemName = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', shopSection.getString(key + ".name", "")));
+                if (configItemName.equalsIgnoreCase(ChatColor.stripColor(itemName))) {
+                    return shopSection.getInt(key + ".price", 0);
+                }
+            }
         }
+        return -1;
     }
 
+    public static String getShopMessage(String key) {
+        return ChatColor.translateAlternateColorCodes('&', shopConfig.getString(key, "&cMensagem não encontrada: " + key));
+    }
 }

@@ -40,7 +40,14 @@ commands:
     description: "Abre a loja de pontos"
     usage: "/frloja"
     permission: frkillsrank.shop
+  implementmm:
+    description: "Implementa os mobs do MythicMobs no servidor."
+    usage: "/implementmm"
+    permission: frkillsrank.admin
 permissions:
   frloja.sell:
     description: "Permite adicionar itens à loja."
+    default: op
+  frkillsrank.admin:
+    description: "Permite gerenciar o FrKillsRank."
     default: op

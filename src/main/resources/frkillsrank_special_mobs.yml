@@ -1,0 +1,42 @@
+EspectroSombrio:
+  Type: WITHER_SKELETON
+  Display: '&8&lEspectro Sombrio'
+  Health: 200
+  Damage: 15
+  AITargetSelectors:
+    - clear
+    - players
+  Equipment:
+    - STONE_SWORD HAND
+  Options:
+    AlwaysAggro: true
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    MovementSpeed: 1.2
+    FollowRange: 32
+  Skills:
+    - skill{s=EspectroAura} @target ~onCombat >0 0.2
+    - skill{s=GolpeSombrio} @target ~onAttack 0.3
+    - skill{s=EspectroTeleport} @self ~onDamaged 0.1
+  Drops:
+    - dropsEspectroSombrio
+
+LoboSanguinario:
+  Type: WOLF
+  Display: '&4&lLobo Sanguinário'
+  Health: 180
+  Damage: 10
+  AITargetSelectors:
+    - clear
+    - players
+  Options:
+    AlwaysAggro: true
+    Angry: true
+    Tamed: false
+    MovementSpeed: 0.5
+    Scale: 1.3
+  Skills:
+    - skill{s=MordidaSanguinaria} @target ~onAttack
+    - skill{s=UivoDeGuerra} @self ~onDamaged 0.2
+  Drops:
+    - dropsLoboSanguinario

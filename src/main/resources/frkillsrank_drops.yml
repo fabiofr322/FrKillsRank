@@ -1,0 +1,14 @@
+dropsEspectroSombrio:
+  Drops:
+    - diamond 1 0.2
+    - netherite_scrap 1-2 0.1
+    - enchanted_book{StoredEnchantments:[{id:sharpness,lvl:5}]} 1 0.05
+    - command{c="addpoints <target.name> 200"} 1 1.0
+
+dropsLoboSanguinario:
+  Drops:
+    - emerald 1-2 0.25
+    - golden_apple 1 0.1
+    - enchanted_book{StoredEnchantments:[{id:"sharpness",lvl:4}]} 1 0.05
+    - command{c="addpoints <target.name> 200"} 1 1.0
+

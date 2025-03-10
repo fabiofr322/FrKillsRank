@@ -9,6 +9,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -29,24 +30,24 @@ public class CommandShop implements CommandExecutor {
 
         // Se o jogador apenas digitar "/frloja", abre a loja
         if (args.length == 0) {
-            ShopGUI.openShop(player);
+            ShopGUI.openMainShop(player);
             return true;
         }
 
-        // Se o jogador digitar "/frloja sell <preço>", adiciona o item na loja
-        if (args.length == 2 && args[0].equalsIgnoreCase("sell")) {
-            return sellItem(player, args[1]);
+        // Se o jogador digitar "/frloja sell <preço> <categoria>", adiciona o item na loja
+        if (args.length == 3 && args[0].equalsIgnoreCase("sell")) {
+            return sellItem(player, args[1], args[2]);
         }
 
-        // Se o jogador usar um comando inválido
+        // Comando inválido
         player.sendMessage("§cUso correto:");
         player.sendMessage("§7/frloja §f- Abre a loja.");
-        player.sendMessage("§7/frloja sell <preço> §f- Adiciona um item à loja (Apenas Admins).");
+        player.sendMessage("§7/frloja sell <preço> <categoria> §f- Adiciona um item à loja (Apenas Admins).");
         return true;
     }
 
-    private boolean sellItem(Player player, String priceArg) {
-        // Verifica se o jogador tem permissão para vender itens na loja
+    private boolean sellItem(Player player, String priceArg, String category) {
+        // Verifica permissão
         if (!player.hasPermission("frloja.sell")) {
             player.sendMessage("§cVocê não tem permissão para adicionar itens à loja!");
             return true;
@@ -71,9 +72,16 @@ public class CommandShop implements CommandExecutor {
             return true;
         }
 
-        // Criar estrutura do item para armazenar no shop.yml
+        // Verifica se a categoria existe no shop.yml
         FileConfiguration shopConfig = ShopManager.getShopConfig();
-        String itemKey = "shop.items." + UUID.randomUUID().toString().substring(0, 8); // ID único
+        ConfigurationSection categorySection = shopConfig.getConfigurationSection("shop." + category);
+        if (categorySection == null) {
+            player.sendMessage("§cA categoria '" + category + "' não existe! Use uma categoria válida.");
+            return true;
+        }
+
+        // Cria a chave única para armazenar o item na categoria correta
+        String itemKey = "shop." + category + "." + UUID.randomUUID().toString().substring(0, 8);
 
         ItemMeta meta = item.getItemMeta();
         shopConfig.set(itemKey + ".name", meta.hasDisplayName() ? meta.getDisplayName() : item.getType().name());
@@ -98,7 +106,7 @@ public class CommandShop implements CommandExecutor {
 
         shopConfig.set(itemKey + ".unbreakable", meta.isUnbreakable());
 
-        // Adicionando atributos personalizados
+        // Adiciona atributos personalizados, se houver
         Map<String, Map<String, Double>> attributes = new HashMap<>();
         for (Attribute attr : Attribute.values()) {
             AttributeInstance attrInstance = player.getAttribute(attr);
@@ -107,17 +115,16 @@ public class CommandShop implements CommandExecutor {
                 for (AttributeModifier modifier : attrInstance.getModifiers()) {
                     attrValues.put(attr.name(), modifier.getAmount());
                 }
-                attributes.put("HAND", attrValues); // HAND pois é a mão do jogador
+                attributes.put("HAND", attrValues); // Assume que os atributos são para a mão do jogador
             }
         }
         shopConfig.set(itemKey + ".attributes", attributes);
 
-        // Salvar no arquivo
+        // Salva as alterações no arquivo (não recarrega, para não descartar as mudanças)
         ShopManager.saveShopConfig();
         ShopManager.reloadShopConfig();
 
-        player.sendMessage("§aItem adicionado à loja por " + price + " pontos!");
-
+        player.sendMessage("§aItem adicionado à loja na categoria '" + category + "' por " + price + " pontos!");
         return true;
     }
 }

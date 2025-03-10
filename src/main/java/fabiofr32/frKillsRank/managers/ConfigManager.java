@@ -1,6 +1,7 @@
 package fabiofr32.frKillsRank.managers;
 
 import fabiofr32.frKillsRank.FrKillsRank;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,31 +21,29 @@ public class ConfigManager {
     }
 
     public static void addPoints(Player player, int points) {
-        PlayerDataManager.addPoints(player, points); // Agora salva no playerdata.yml
+        // Salva os pontos via PlayerDataManager
+        PlayerDataManager.addPoints(player, points);
     }
 
     public static int getPoints(Player player) {
-        return PlayerDataManager.getPoints(player); // Agora pega do playerdata.yml
+        if (player == null) return 0; // Evita erro de NullPointerException
+        return PlayerDataManager.getPoints(player);
     }
+
 
     public static void removePoints(Player player, int points) {
         int currentPoints = getPoints(player);
-        int newPoints = Math.max(0, currentPoints - points); // Garante que não fique negativo
-        PlayerDataManager.setPoints(player, newPoints); // Agora salva no playerdata.yml
+        int newPoints = Math.max(0, currentPoints - points);
+        PlayerDataManager.setPoints(player, newPoints);
     }
-
 
     public static String getMessage(String key, Player player, int points) {
         String message = config.getString("settings." + key, "&cMensagem não encontrada: " + key);
-
         if (message == null) {
             return "&cMensagem não encontrada: " + key;
         }
-
-        // Substituir placeholders corretamente
         message = message.replace("{points}", String.valueOf(points));
         message = message.replace("{total_points}", (player != null) ? String.valueOf(getPoints(player)) : "0");
-
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
@@ -52,28 +51,28 @@ public class ConfigManager {
         if (config == null) {
             return "&c[Erro] Configuração não carregada!";
         }
-
         String message = config.getString(key, "&cMensagem não encontrada: " + key);
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public static int getMobPoints(String mobType) {
-        return config.getInt("settings.points." + mobType, 1); // Default 1 ponto caso não esteja configurado
+        return config.getInt("settings.points." + mobType, 1);
     }
 
     public static int getKills(Player player) {
-        return PlayerDataManager.getKills(player); // Pega direto do playerdata.yml
+        return PlayerDataManager.getKills(player);
     }
 
     public static void addKill(Player player) {
-        PlayerDataManager.addKill(player); // Adiciona e salva no playerdata.yml
+        // Incrementa a kill do jogador
+        PlayerDataManager.addKill(player);
+        // Atualiza o scoreboard com as novas informações, incluindo a posição
+        ScoreboardManager.updateScoreboard(player);
     }
-
 
 
     public static String getRank(Player player) {
         int points = getPoints(player);
-
         ConfigurationSection ranksSection = config.getConfigurationSection("settings.ranks");
         if (ranksSection == null) return "Sem Rank";
 
@@ -87,10 +86,8 @@ public class ConfigManager {
                 currentPoints = requiredPoints;
             }
         }
-
         return currentRank;
     }
-
 
     public static boolean isMobConfigured(String mobName) {
         return config.contains("settings.points." + mobName);
@@ -99,25 +96,54 @@ public class ConfigManager {
     public static int getPlayerRankingPosition(Player player) {
         int playerPts = getPoints(player);
         int position = 1;
-        // Percorre todos os jogadores presentes no cache de pontos
-        for (UUID uuid : playerPoints.keySet()) {
-            int pts = playerPoints.get(uuid);
-            if (pts > playerPts) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (!p.equals(player) && getPoints(p) > playerPts) {
                 position++;
             }
         }
         return position;
     }
 
+
+    // Método atualizado para utilizar a chave completa sem adicionar prefixos extras
     public static List<String> getMessageList(String key) {
-        if (!config.contains("settings.messages." + key)) {
-            return Collections.emptyList(); // Retorna uma lista vazia se a chave não existir
+        if (!config.contains(key)) {
+            return Collections.emptyList();
         }
-        return config.getStringList("settings.messages." + key).stream()
+        return config.getStringList(key).stream()
                 .map(line -> ChatColor.translateAlternateColorCodes('&', line))
                 .collect(Collectors.toList());
     }
 
+    public static int getRankPoints(String rank) {
+        return config.getInt("settings.ranks." + rank, -1);
+    }
+
+    public static boolean getBoolean(String path, boolean defaultValue) {
+        return config.getBoolean(path, defaultValue);
+    }
+
+    public static void setBoolean(String path, boolean value) {
+        config.set(path, value);
+        FrKillsRank.getInstance().saveConfig();
+    }
+
+    public static String getRankForPoints(int points) {
+        ConfigurationSection ranksSection = FrKillsRank.getInstance().getConfig().getConfigurationSection("settings.ranks");
+        if (ranksSection == null) return "Sem Rank";
+
+        String currentRank = "Sem Rank";
+        int currentPoints = 0;
+
+        for (String rankName : ranksSection.getKeys(false)) {
+            int requiredPoints = ranksSection.getInt(rankName);
+            if (points >= requiredPoints && requiredPoints >= currentPoints) {
+                currentRank = rankName;
+                currentPoints = requiredPoints;
+            }
+        }
+        return currentRank;
+    }
 
 
 }

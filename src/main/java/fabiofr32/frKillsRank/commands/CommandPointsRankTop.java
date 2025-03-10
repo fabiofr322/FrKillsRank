@@ -1,18 +1,16 @@
 package fabiofr32.frKillsRank.commands;
 
 import fabiofr32.frKillsRank.FrKillsRank;
+import fabiofr32.frKillsRank.managers.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class CommandPointsRankTop implements CommandExecutor {
 
@@ -29,49 +27,41 @@ public class CommandPointsRankTop implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            String onlyPlayersMsg = FrKillsRank.getInstance().getConfig()
-                    .getString("settings.messages.only_players", "Apenas jogadores podem usar este comando!");
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', onlyPlayersMsg));
+            sender.sendMessage(ChatColor.RED + "Apenas jogadores podem usar este comando!");
             return true;
         }
         Player player = (Player) sender;
-        FileConfiguration config = FrKillsRank.getInstance().getConfig();
-        ConfigurationSection playersSection = config.getConfigurationSection("players");
-        if (playersSection == null) {
-            String noDataMsg = config.getString("settings.messages.no_data", "Nenhum dado encontrado.");
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', noDataMsg));
-            return true;
-        }
 
+        // Pegar todos os jogadores e seus pontos
         List<PlayerRank> ranks = new ArrayList<>();
-        for (String key : playersSection.getKeys(false)) {
-            int pts = config.getInt("players." + key + ".points", 0);
-            try {
-                UUID uuid = UUID.fromString(key);
-                ranks.add(new PlayerRank(uuid, pts));
-            } catch (IllegalArgumentException ex) {
-                // Ignora entradas com UUID inválido.
+        for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+            int points = ConfigManager.getPoints(Bukkit.getPlayer(offlinePlayer.getUniqueId()));
+
+            if (points > 0) {
+                ranks.add(new PlayerRank(offlinePlayer.getUniqueId(), points));
             }
         }
 
-        // Ordena em ordem decrescente de pontos.
+        // Ordenar por pontos (decrescente)
         ranks.sort((a, b) -> Integer.compare(b.points, a.points));
 
-        String header = config.getString("settings.messages.top_header", "=== Top 10 Jogadores ===");
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', header));
+        // Mensagem de cabeçalho
+        player.sendMessage(ChatColor.GOLD + "=== TOP 10 JOGADORES ===");
 
         int limit = Math.min(10, ranks.size());
         for (int i = 0; i < limit; i++) {
             PlayerRank pr = ranks.get(i);
-            String playerName = Bukkit.getOfflinePlayer(pr.uuid).getName();
-            if (playerName == null) {
-                playerName = pr.uuid.toString();
-            }
-            String line = config.getString("settings.messages.top_player", "{position}º - {player}: {points} pontos")
-                    .replace("{position}", String.valueOf(i + 1))
-                    .replace("{player}", playerName)
-                    .replace("{points}", String.valueOf(pr.points));
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', line));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(pr.uuid);
+            String playerName = (offlinePlayer.getName() != null) ? offlinePlayer.getName() : pr.uuid.toString();
+            String rank = ConfigManager.getRankForPoints(pr.points); // Obtém o rank do jogador
+
+            // Linha do Top
+            String line = ChatColor.YELLOW.toString() + (i + 1) + "º " + ChatColor.AQUA + playerName + " " +
+                    ChatColor.GRAY + "[" + ChatColor.GREEN + rank + ChatColor.GRAY + "]" +
+                    ChatColor.WHITE + " - " + ChatColor.GOLD + pr.points + " pontos";
+
+
+            player.sendMessage(line);
         }
         return true;
     }

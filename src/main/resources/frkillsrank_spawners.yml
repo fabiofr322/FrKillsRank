@@ -1,0 +1,20 @@
+EspectroSpawner:
+  MobType: EspectroSombrio
+  Worlds: world
+  Chance: 0.001
+  Priority: 1
+  Conditions:
+    - biome PLAINS,FOREST,SWAMP
+  Cooldown: 1800
+
+  LoboSanguinarioSpawner:
+    MobType: LoboSanguinario
+    Worlds: world
+    Chance: 0.003
+    Priority: 1
+    Conditions:
+      - biome FOREST, TAIGA, DARK_FOREST
+    Cooldown: 1800
+    ActionRadius: 50
+    MaxMobs: 2
+

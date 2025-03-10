@@ -20,7 +20,6 @@ public class CommandFrKillsRank implements CommandExecutor, TabCompleter {
             "gui",
             "recompensas",
             "pointskills",
-            "pointsrank",
             "pointsranktop",
             "reloadkillsconfig",
             "addpoints",
@@ -68,8 +67,6 @@ public class CommandFrKillsRank implements CommandExecutor, TabCompleter {
                     return new CommandRecompensas().onCommand(sender, command, label, newArgs);
                 case "pointskills":
                     return new CommandPointSkills().onCommand(sender, command, label, newArgs);
-                case "pointsrank":
-                    return new CommandPointsRank().onCommand(sender, command, label, newArgs);
                 case "pointsranktop":
                     return new CommandPointsRankTop().onCommand(sender, command, label, newArgs);
                 case "reloadkillsconfig":

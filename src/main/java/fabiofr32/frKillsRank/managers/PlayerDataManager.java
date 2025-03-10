@@ -26,6 +26,10 @@ public class PlayerDataManager {
         playerDataConfig = YamlConfiguration.loadConfiguration(playerDataFile);
     }
 
+    public static FileConfiguration getPlayerDataConfig() {
+        return playerDataConfig;
+    }
+
     // Salva as alterações no arquivo
     public static void savePlayerData() {
         try {

@@ -1,0 +1,40 @@
+## EspectroSombrio
+
+EspectroAura:
+  Cooldown: 10
+  Skills:
+    - effect:particles{particle=smoke_large;amount=50;hS=1;vS=2} @self
+    - potion{type=SLOW;duration=60;level=1} @target
+    - sound{s=entity.wither.ambient;volume=1.0;pitch=0.5} @self
+
+GolpeSombrio:
+  Cooldown: 5
+  Skills:
+    - damage{amount=8;ignoreArmor=false} @target
+    - effect:particles{particle=crit_magic;amount=30;speed=0.5} @target
+    - sound{s=entity.enderman.hurt;volume=0.8;pitch=1.2} @target
+
+EspectroTeleport:
+  Cooldown: 20
+  Skills:
+    - teleport{spreadh=8;spreadv=3} @self
+    - effect:particles{particle=portal;amount=40;speed=1.0} @origin
+    - sound{s=entity.enderman.teleport;volume=1.0;pitch=1.0} @self
+
+
+## LoboSanguinario
+
+MordidaSanguinaria:
+  Cooldown: 6
+  Skills:
+    - damage{amount=10;ignoreArmor=false} @target
+    - potion{type=BLEED;duration=100;level=1} @target
+    - effect:particles{particle=redstone;amount=25;speed=0.5} @target
+    - sound{s=entity.wolf.growl;volume=1.0;pitch=0.9} @target
+
+UivoDeGuerra:
+  Cooldown: 20
+  Skills:
+    - potion{type=INCREASE_DAMAGE;duration=200;level=1} @self
+    - effect:particles{particle=angry_villager;amount=30;hS=1;vS=2} @self
+    - sound{s=entity.wolf.howl;volume=1.0;pitch=0.8} @self
