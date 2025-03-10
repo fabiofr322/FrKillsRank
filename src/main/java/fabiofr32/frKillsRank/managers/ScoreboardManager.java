@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
+import fabiofr32.frKillsRank.managers.PlayerDataManager;
 
 public class ScoreboardManager {
 
@@ -28,6 +29,10 @@ public class ScoreboardManager {
         int points = ConfigManager.getPoints(player);
         int rankPosition = ConfigManager.getPlayerRankingPosition(player);
 
+        // Obtém o status do PvP
+        boolean isPvPEnabled = PlayerDataManager.isPvPEnabled(player);
+        String pvpStatus = isPvPEnabled ? "§aON" : "§cOFF"; // ON = Verde, OFF = Vermelho
+
         // Puxa as mensagens do config.yml e substitui as variáveis
         String rankLine = getConfigString("settings.scoreboard.rank", "&6🏆 Rank: &a%rank%")
                 .replace("%rank%", rank);
@@ -38,19 +43,27 @@ public class ScoreboardManager {
         String pointsLine = getConfigString("settings.scoreboard.points", "&e⭐ Pontos: %points%")
                 .replace("%points%", String.valueOf(points));
 
-        String positionLine = getConfigString("settings.scoreboard.position", "&b📌 Posição: &a#%position%")
-                .replace("%position%", String.valueOf(rankPosition));
+        // Se o jogador tem 0 pontos, exibir "N/A" em vez de "#1"
+        String positionDisplay = (points == 0) ? "N/A" : ("" + rankPosition);
+
+        String positionLine = getConfigString("settings.scoreboard.position", "&b📌 Posição: &a%position%")
+                .replace("%position%", positionDisplay);
+
+        // Linha do status do PvP
+        String pvpLine = getConfigString("settings.scoreboard.pvp_status", "&d⚔ PvP: %status%")
+                .replace("%status%", pvpStatus);
 
         // Adicionando espaçamentos alternados para forçar a exibição correta
-        objective.getScore(ChatColor.GRAY + "-------------------").setScore(8);
-        objective.getScore(rankLine).setScore(7);
-        objective.getScore("  ").setScore(6);
-        objective.getScore(positionLine).setScore(5);
-        objective.getScore("   ").setScore(4);
-        objective.getScore(killsLine).setScore(3);
-        objective.getScore("    ").setScore(2);
-        objective.getScore(pointsLine).setScore(1);
-        objective.getScore(ChatColor.GRAY + "--------------------").setScore(0);
+        objective.getScore(ChatColor.GRAY + "-------------------").setScore(9);
+        objective.getScore(rankLine).setScore(8);
+        objective.getScore("  ").setScore(7);
+        objective.getScore(positionLine).setScore(6);
+        objective.getScore("   ").setScore(5);
+        objective.getScore(killsLine).setScore(4);
+        objective.getScore("    ").setScore(3);
+        objective.getScore(pointsLine).setScore(2);
+        objective.getScore("     ").setScore(1);
+        objective.getScore(pvpLine).setScore(0); // PvP na última linha
 
         player.setScoreboard(scoreboard);
     }

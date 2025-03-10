@@ -74,12 +74,16 @@ public class ConfigManager {
     public static String getRank(Player player) {
         int points = getPoints(player);
         ConfigurationSection ranksSection = config.getConfigurationSection("settings.ranks");
+
         if (ranksSection == null) return "Sem Rank";
 
         String currentRank = "Sem Rank";
         int currentPoints = 0;
 
         for (String rankName : ranksSection.getKeys(false)) {
+            // Verifica se a chave não é "chat" antes de processar
+            if (rankName.equalsIgnoreCase("chat")) continue;
+
             int requiredPoints = ranksSection.getInt(rankName);
             if (points >= requiredPoints && requiredPoints >= currentPoints) {
                 currentRank = rankName;
@@ -89,20 +93,48 @@ public class ConfigManager {
         return currentRank;
     }
 
+
     public static boolean isMobConfigured(String mobName) {
         return config.contains("settings.points." + mobName);
     }
 
     public static int getPlayerRankingPosition(Player player) {
         int playerPts = getPoints(player);
-        int position = 1;
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!p.equals(player) && getPoints(p) > playerPts) {
-                position++;
+
+        // Se o jogador tem pontos maiores que 0, usamos a lógica normal
+        if (playerPts > 0) {
+            int position = 1;
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (!p.equals(player) && getPoints(p) > playerPts) {
+                    position++;
+                }
+            }
+            return position;
+        } else {
+            // Se o jogador tem 0 pontos, verifica se existe alguém com mais de 0
+            boolean someoneHasMore = false;
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (!p.equals(player) && getPoints(p) > 0) {
+                    someoneHasMore = true;
+                    break;
+                }
+            }
+            if (someoneHasMore) {
+                // A posição do jogador com 0 pontos será: número de jogadores com >0 pontos + 1
+                int count = 0;
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (getPoints(p) > 0) {
+                        count++;
+                    }
+                }
+                return count + 1;
+            } else {
+                // Se todos tiverem 0 pontos, a posição será 1
+                return 1;
             }
         }
-        return position;
     }
+
 
 
     // Método atualizado para utilizar a chave completa sem adicionar prefixos extras
@@ -145,5 +177,11 @@ public class ConfigManager {
         return currentRank;
     }
 
+    public static void checkAndUpdateTop1(Player player) {
+        // Se o jogador for Top 1, ativamos o PvP automaticamente
+        if (getPlayerRankingPosition(player) == 1) {
+            PlayerDataManager.setPvP(player, true);
+        }
+    }
 
 }

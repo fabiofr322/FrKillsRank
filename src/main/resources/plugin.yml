@@ -44,6 +44,12 @@ commands:
     description: "Implementa os mobs do MythicMobs no servidor."
     usage: "/implementmm"
     permission: frkillsrank.admin
+  pvp:
+    description: Ativa ou desativa o PvP do jogador
+    usage: /pvp <on/off>
+  pvplist:
+    description: Ver player com PVP ONo u OFF
+    usage: /pvplist
 permissions:
   frloja.sell:
     description: "Permite adicionar itens à loja."

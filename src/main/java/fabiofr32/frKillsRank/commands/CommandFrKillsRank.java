@@ -25,7 +25,8 @@ public class CommandFrKillsRank implements CommandExecutor, TabCompleter {
             "addpoints",
             "removepoints",
             "missions",
-            "frloja"
+            "frloja",
+            "pvp"
     );
 
     @Override
@@ -79,6 +80,8 @@ public class CommandFrKillsRank implements CommandExecutor, TabCompleter {
                     return new CommandMissions().onCommand(sender, command, label, newArgs);
                 case "frloja":
                     return new CommandShop().onCommand(sender, command, label, newArgs);
+                case "pvp":
+                    return new CommandPvP().onCommand(sender, command, label, newArgs);
                 // No switch do CommandFrKillsRank.java
                 case "gui":
                     MainGUI.openMainGUI(player);

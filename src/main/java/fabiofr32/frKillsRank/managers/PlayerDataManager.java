@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 public class PlayerDataManager {
 
@@ -48,7 +49,11 @@ public class PlayerDataManager {
     public static void setPoints(Player player, int points) {
         playerDataConfig.set("players." + player.getUniqueId() + ".points", points);
         savePlayerData();
+
+        // Checa se o jogador se tornou Top 1 e ativa o PvP
+        ConfigManager.checkAndUpdateTop1(player);
     }
+
 
     // Adiciona pontos ao jogador
     public static void addPoints(Player player, int points) {
@@ -69,5 +74,16 @@ public class PlayerDataManager {
         int currentKills = getKills(player);
         setKills(player, currentKills + 1);
     }
+
+    public static void setPvP(Player player, boolean status) {
+        playerDataConfig.set("players." + player.getUniqueId() + ".pvp", status);
+        savePlayerData();
+    }
+
+    public static boolean isPvPEnabled(Player player) {
+        return playerDataConfig.getBoolean("players." + player.getUniqueId() + ".pvp", false);
+    }
+
+
 
 }

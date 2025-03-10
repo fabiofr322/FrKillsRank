@@ -1,10 +1,40 @@
 settings:
   points:
-    ZOMBIE: 5
-    SKELETON: 7
-    CREEPER: 10
-    ENDERMAN: 15
-    WITHER: 100
+    # Mobs Comuns (1 ponto - Fáceis de farmar)
+    ZOMBIE: 1
+    SKELETON: 1
+    SPIDER: 1
+    CREEPER: 1
+    DROWNED: 1
+    HUSK: 1
+    STRAY: 1
+    SLIME: 1
+    SILVERFISH: 1
+    MAGMA_CUBE: 1
+    PHANTOM: 1
+    PILLAGER: 1
+    VEX: 1
+    ZOMBIFIED_PIGLIN: 1
+    HOGLIN: 1
+    ENDERMAN: 1
+
+    # Mobs Difíceis de Farmar (2 pontos)
+    CAVE_SPIDER: 2
+    BLAZE: 2
+    EVOKER: 2
+    WITCH: 2
+    GUARDIAN: 2
+    SHULKER: 2
+    RAVAGER: 2
+    PIGLIN_BRUTE: 2
+    ZOGLIN: 2
+
+    # Bosses (Acima de 100 pontos)
+    WITHER: 200
+    ENDER_DRAGON: 150
+    ELDER_GUARDIAN: 100
+    WARDEN: 100
+
   messages:
     kill: "&aVocê ganhou {points} pontos! Total: {total_points}"
     reload: "&eConfiguração recarregada com sucesso!"
@@ -56,15 +86,31 @@ settings:
     item_reward: "&aVocê recebeu {amount}x {item}!"
     money_reward: "&aVocê recebeu ${money}!"
     command_reward: "&aVocê recebeu uma recompensa especial!"
+  mythicmobs:
+    prompt_message: "Verificamos que o MythicMobs está instalado em seu servidor. "
+    prompt_clickable: "[Clique aqui para implementar]"
+    prompt_hover: "Clique para adicionar os mobs especiais ao MythicMobs."
+    implemented: "Mobs especiais implementados e MythicMobs recarregado."
+  showMythicMobsPrompt: true
+  pvp:
+    pvplist_header: "&e===== Lista de PvP ====="
+    pvplist_pvp_on: "&a[PvP ON]: {players}"
+    pvplist_pvp_off: "&c[PvP OFF]: {players}"
+    pvplist_none: "&7Nenhum jogador"
+    pvplist_footer: "&e====================="
+    pvp_disabled_target: "&cEste jogador tem o PvP desativado!"
+    pvp_disabled_attacker: "&cVocê tem o PvP desativado e não pode atacar outros jogadores!"
+    death_lost_points: "&cVocê perdeu {points} pontos por ter sido morto."
+    death_gained_points: "&aVocê ganhou {points} pontos ao matar {player}."
   gui:
     main_title: "&6FrKillsRank Menu"
     player_head_name: "&aSeu Perfil"
     player_head_lore:
       - "Rank: {rank}"
       - "Pontos: {points}"
-    rewards_item_name: "&bRecompensas"
-    rewards_item_lore:
-      - "Clique para ver as recompensas disponíveis."
+    shop_item_name: "&bLoja"
+    shop_item_lore:
+      - "Clique para ver as Lojas disponíveis."
     rank_item_name: "&dRank dos Jogadores"
     rank_item_lore:
       - "Clique para ver seu rank e o dos demais."
@@ -114,10 +160,12 @@ settings:
     Guerreiro: 20000
     Soldado: 5000
     Iniciante: 0
-  mythicmobs:
-    prompt_message: "Verificamos que o MythicMobs está instalado em seu servidor. "
-    prompt_clickable: "[Clique aqui para implementar]"
-    prompt_hover: "Clique para adicionar os mobs especiais ao MythicMobs."
-    implemented: "Mobs especiais implementados e MythicMobs recarregado."
-  showMythicMobsPrompt: true
+    chat:
+      Lendário: "&6[Lendário]"
+      Mestre: "&d[Mestre]"
+      Guerreiro: "&c[Guerreiro]"
+      Soldado: "&9[Soldado]"
+      Iniciante: "&a[Iniciante]"
+
+
 

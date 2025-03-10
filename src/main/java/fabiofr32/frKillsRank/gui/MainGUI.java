@@ -45,9 +45,9 @@ public class MainGUI {
         ItemStack rewards = new ItemStack(Material.CHEST);
         ItemMeta rewardsMeta = rewards.getItemMeta();
         String rewardsName = ChatColor.translateAlternateColorCodes('&',
-                FrKillsRank.getInstance().getConfig().getString("settings.gui.rewards_item_name", "&bRecompensas"));
+                FrKillsRank.getInstance().getConfig().getString("settings.gui.shop_item_name", "&bLoja"));
         rewardsMeta.setDisplayName(rewardsName);
-        List<String> rewardsLore = FrKillsRank.getInstance().getConfig().getStringList("settings.gui.rewards_item_lore");
+        List<String> rewardsLore = FrKillsRank.getInstance().getConfig().getStringList("settings.gui.shop_item_lore");
         rewardsLore = rewardsLore.stream().map(line -> ChatColor.translateAlternateColorCodes('&', line)).collect(Collectors.toList());
         rewardsMeta.setLore(rewardsLore);
         rewards.setItemMeta(rewardsMeta);

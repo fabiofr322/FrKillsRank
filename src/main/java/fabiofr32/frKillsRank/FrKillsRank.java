@@ -3,6 +3,9 @@ package fabiofr32.frKillsRank;
 import fabiofr32.frKillsRank.commands.*;
 import fabiofr32.frKillsRank.events.MobKillListener;
 import fabiofr32.frKillsRank.gui.*;
+import fabiofr32.frKillsRank.listeners.ChatListener;
+import fabiofr32.frKillsRank.listeners.PlayerDeathListener;
+import fabiofr32.frKillsRank.listeners.PvPListener;
 import fabiofr32.frKillsRank.managers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,6 +24,7 @@ public final class FrKillsRank extends JavaPlugin {
         RewardsManager.loadRewards(); // Carrega as recompensas do rewards.yml
         Bukkit.getConsoleSender().sendMessage("§a[FrKillsRank] Plugin ativado!");
         startScoreboardUpdater(); // Inicia o loop de atualização do Scoreboard
+        startTagUpdate();
 
         mythicMobsIntegrationManager = new MythicMobsIntegrationManager(this);
         mythicMobsIntegrationManager.checkAndNotify();
@@ -41,10 +45,12 @@ public final class FrKillsRank extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SupportItemsGUI(), this);
         getServer().getPluginManager().registerEvents(new LegendaryShopGUI(), this);
         getServer().getPluginManager().registerEvents(new MasterShopGUI(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        getServer().getPluginManager().registerEvents(new ChatListener(), this);
+        getServer().getPluginManager().registerEvents(new PvPListener(), this);
 
-        // Registrar comandos já existentes
         getCommand("reloadkillsconfig").setExecutor(new CommandReloadConfig());
-        getCommand("recompensas").setExecutor(new CommandRecompensas());
+        //getCommand("recompensas").setExecutor(new CommandRecompensas());
         getCommand("pointskills").setExecutor(new CommandPointSkills());
         getCommand("pointsranktop").setExecutor(new CommandPointsRankTop());
         getCommand("addpoints").setExecutor(new CommandAddPoints());
@@ -52,6 +58,8 @@ public final class FrKillsRank extends JavaPlugin {
         getCommand("missions").setExecutor(new CommandMissions());
         getCommand("frloja").setExecutor(new CommandShop());
         getCommand("implementmm").setExecutor(new MythicMobsCommand(this));
+        getCommand("pvp").setExecutor(new CommandPvP());
+        getCommand("pvplist").setExecutor(new CommandPvPList());
 
         // Registrar o comando principal (se aplicável)
         if (getCommand("frkillsrank") == null) {
@@ -82,6 +90,13 @@ public final class FrKillsRank extends JavaPlugin {
                     ScoreboardManager.updateScoreboard(player);
                 }
             }
-        }, 0L, 20);
+        }, 0L, 20l);
+    }
+
+    private void startTagUpdate() {
+        // Agendador para atualizar todas as tags a cada 10 segundos (200 ticks)
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            TagManager.updateAllTags();
+        }, 0L, 1l);
     }
 }

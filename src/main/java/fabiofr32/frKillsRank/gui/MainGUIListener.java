@@ -37,7 +37,7 @@ public class MainGUIListener implements Listener {
                 break;
             case 12:
                 // Recompensas: abre o GUI de recompensas
-                RewardsGUI.openRewardsMenu(player);
+                ShopGUI.openMainShop(player);
                 break;
             case 14:
                 // Rank: executa o comando que mostra o rank (por exemplo, /pointsrank)
