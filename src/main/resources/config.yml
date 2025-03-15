@@ -70,12 +70,18 @@ settings:
     event_end_no_winner: "&eEvento {event_name} encerrado! Nenhum participante."
     event_active: "&eEvento {event_name} ativo! Ninguém registrou kills ainda."
     event_leader: "&eEvento {event_name} ativo! Atual líder: {player} com {kills} kills."
+  top1:
+    enable: true
+    broadcast_title: "&6🔥 {player} DOMINOU O RANK! 🔥"
+    broadcast_subtitle: "&e👑 O novo REI dos pontos foi coroado! 👑"
   scoreboard:
     title: "&6&lKillsRank"
     rank: "&6🏆 Rank: &a%rank%"
     kills: "&c💀 Kills: &f%kills%"
     points: "&e⭐ Pontos: %points%"
-    position: "&b📌 Posição: &a#%position%"
+    position: "&b📌 Posição: &a%position%"
+    pvp_status: "&d⚔ PvP: %status%"
+    top_rank: "&6👑 Top 1: &c%top_rank%"
   rewards:
     gui_title: "&6Recompensas Disponíveis"
     item_display: "&aRecompensa por {points} pontos!"
@@ -153,7 +159,12 @@ settings:
     price_format: "&6Preço: &e{price} pontos"
     not_enough_points: "&cVocê não tem pontos suficientes para comprar este item!"
     purchase_success: "&aVocê comprou {item} por {price} pontos!"
+    inventory_full: "&cSeu inventário está cheio! Libere espaço antes de comprar."
     close_button: "&cFechar Loja"
+  mob_list:
+    no_data: "&cNenhuma informação de mobs encontrada."
+    top_header: "&6===== 🏆 Lista de Mobs e Pontos 🏆 ====="
+    top_footer: "&6================================="
   ranks:
     Lendário: 100000
     Mestre: 50000

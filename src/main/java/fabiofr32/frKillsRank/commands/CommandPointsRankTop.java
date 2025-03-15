@@ -2,6 +2,7 @@ package fabiofr32.frKillsRank.commands;
 
 import fabiofr32.frKillsRank.FrKillsRank;
 import fabiofr32.frKillsRank.managers.ConfigManager;
+import fabiofr32.frKillsRank.managers.PlayerDataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -35,12 +36,19 @@ public class CommandPointsRankTop implements CommandExecutor {
         // Pegar todos os jogadores e seus pontos
         List<PlayerRank> ranks = new ArrayList<>();
         for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-            int points = ConfigManager.getPoints(Bukkit.getPlayer(offlinePlayer.getUniqueId()));
-
+            int points = 0;
+            // Se o jogador estiver online, use o método existente; caso contrário, leia diretamente do playerdata.yml
+            Player onlinePlayer = Bukkit.getPlayer(offlinePlayer.getUniqueId());
+            if (onlinePlayer != null) {
+                points = ConfigManager.getPoints(onlinePlayer);
+            } else {
+                points = PlayerDataManager.getPlayerDataConfig().getInt("players." + offlinePlayer.getUniqueId().toString() + ".points", 0);
+            }
             if (points > 0) {
                 ranks.add(new PlayerRank(offlinePlayer.getUniqueId(), points));
             }
         }
+
 
         // Ordenar por pontos (decrescente)
         ranks.sort((a, b) -> Integer.compare(b.points, a.points));
@@ -53,13 +61,19 @@ public class CommandPointsRankTop implements CommandExecutor {
             PlayerRank pr = ranks.get(i);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(pr.uuid);
             String playerName = (offlinePlayer.getName() != null) ? offlinePlayer.getName() : pr.uuid.toString();
-            String rank = ConfigManager.getRankForPoints(pr.points); // Obtém o rank do jogador
+            String rankName = ConfigManager.getRankForPoints(pr.points);
+            String rankFormatted = ConfigManager.getSimpleMessage("settings.ranks.chat." + rankName);
+
+// Se o formato do chat não existir, usa apenas o nome do rank
+            if (rankFormatted == null || rankFormatted.isEmpty()) {
+                rankFormatted = rankName;
+            }
+
 
             // Linha do Top
             String line = ChatColor.YELLOW.toString() + (i + 1) + "º " + ChatColor.AQUA + playerName + " " +
-                    ChatColor.GRAY + "[" + ChatColor.GREEN + rank + ChatColor.GRAY + "]" +
+                    ChatColor.GRAY + "[" + rankFormatted + ChatColor.GRAY + "]" +
                     ChatColor.WHITE + " - " + ChatColor.GOLD + pr.points + " pontos";
-
 
             player.sendMessage(line);
         }

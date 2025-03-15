@@ -45,14 +45,13 @@ public class PlayerDataManager {
         return playerDataConfig.getInt("players." + player.getUniqueId() + ".points", 0);
     }
 
-    // Define os pontos do jogador e salva
     public static void setPoints(Player player, int points) {
         playerDataConfig.set("players." + player.getUniqueId() + ".points", points);
         savePlayerData();
-
-        // Checa se o jogador se tornou Top 1 e ativa o PvP
-        ConfigManager.checkAndUpdateTop1(player);
+        // Remova ou comente a chamada abaixo:
+        // ConfigManager.checkAndUpdateTop1();
     }
+
 
 
     // Adiciona pontos ao jogador

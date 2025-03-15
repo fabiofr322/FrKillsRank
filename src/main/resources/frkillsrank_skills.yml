@@ -1,5 +1,3 @@
-## EspectroSombrio
-
 EspectroAura:
   Cooldown: 10
   Skills:
@@ -21,9 +19,6 @@ EspectroTeleport:
     - effect:particles{particle=portal;amount=40;speed=1.0} @origin
     - sound{s=entity.enderman.teleport;volume=1.0;pitch=1.0} @self
 
-
-## LoboSanguinario
-
 MordidaSanguinaria:
   Cooldown: 6
   Skills:
@@ -38,3 +33,182 @@ UivoDeGuerra:
     - potion{type=INCREASE_DAMAGE;duration=200;level=1} @self
     - effect:particles{particle=angry_villager;amount=30;hS=1;vS=2} @self
     - sound{s=entity.wolf.howl;volume=1.0;pitch=0.8} @self
+
+
+GarraAncestral:
+  Cooldown: 8
+  Skills:
+    - damage{amount=14;ignoreArmor=false} @target
+    - throw{velocity=1;velocityY=0.5} @target
+    - effect:particles{particle=crit;amount=30;speed=0.5} @target
+    - sound{s=entity.polar_bear.attack;volume=1.0;pitch=0.8} @target
+
+RugidoDeFuria:
+  Cooldown: 25
+  Skills:
+    - potion{type=RESISTANCE;duration=200;level=2} @self
+    - effect:particles{particle=cloud;amount=50;hS=1;vS=2} @self
+    - sound{s=entity.polar_bear.warning;volume=1.5;pitch=0.8} @self
+
+## Aranha Venenosa
+
+MordidaVenenosa:
+  Cooldown: 6
+  Skills:
+    - damage{amount=6;ignoreArmor=false} @target
+    - potion{type=POISON;duration=50;level=1} @target
+    - effect:particles{particle=spell_mob;amount=20;speed=0.5} @target
+    - sound{s=entity.spider.hurt;volume=1.0;pitch=0.8} @target
+
+TeiaPegajosa:
+  Cooldown: 15
+  Skills:
+    - potion{type=SLOW;duration=80;level=2} @target
+    - effect:particles{particle=web;amount=30;speed=0.5} @target
+    - sound{s=block.web.break;volume=1.0;pitch=0.8} @target
+
+## Esqueleto Flamejante
+
+FlechaFlamejante:
+  Cooldown: 5
+  Skills:
+    - damage{amount=10;ignoreArmor=false} @target
+    - potion{type=FIRE;duration=40;level=1} @target
+    - effect:particles{particle=flame;amount=20;speed=0.5} @target
+    - sound{s=entity.blaze.shoot;volume=1.0;pitch=0.8} @target
+
+ExplosaoDeChamas:
+  Cooldown: 20
+  Skills:
+    - damage{amount=15;ignoreArmor=false} @target
+    - effect:particles{particle=lava;amount=30;speed=1.0} @target
+    - sound{s=entity.blaze.burn;volume=1.0;pitch=0.8} @target
+
+## Zumbi de Gelo
+
+GolpeGelado:
+  Cooldown: 7
+  Skills:
+    - damage{amount=8;ignoreArmor=false} @target
+    - potion{type=SLOW;duration=60;level=1} @target
+    - effect:particles{particle=snow_shovel;amount=20;speed=0.5} @target
+    - sound{s=entity.snow_golem.hurt;volume=1.0;pitch=0.8} @target
+
+AuraCongelante:
+  Cooldown: 25
+  Skills:
+    - potion{type=SLOW;duration=100;level=2} @target
+    - effect:particles{particle=snowball;amount=30;speed=0.5} @target
+    - sound{s=block.glass.break;volume=1.0;pitch=0.8} @target
+
+## Enderman Sombrio
+
+TeletransporteSombrio:
+  Cooldown: 15
+  Skills:
+    - teleport{spreadh=10;spreadv=4} @self
+    - effect:particles{particle=portal;amount=30;speed=1.0} @origin
+    - sound{s=entity.enderman.teleport;volume=1.0;pitch=1.0} @self
+
+GolpeDasSombras:
+  Cooldown: 8
+  Skills:
+    - damage{amount=12;ignoreArmor=false} @target
+    - effect:particles{particle=smoke_large;amount=20;speed=0.5} @target
+    - sound{s=entity.enderman.hurt;volume=1.0;pitch=0.8} @target
+
+## Assassino das Sombras
+
+GolpeFurtivo:
+  Cooldown: 6
+  Skills:
+    - damage{amount=16;ignoreArmor=false} @target
+    - potion{type=BLINDNESS;duration=40;level=1} @target
+    - effect:particles{particle=smoke_large;amount=30;speed=0.5} @target
+    - sound{s=entity.husk.ambient;volume=1.0;pitch=0.8} @target
+
+Invisibilidade:
+  Cooldown: 20
+  Skills:
+    - potion{type=INVISIBILITY;duration=100;level=1} @self
+    - effect:particles{particle=smoke_normal;amount=20;speed=0.5} @self
+    - sound{s=entity.husk.step;volume=1.0;pitch=0.8} @self
+
+ExplosaoSombria:
+  Cooldown: 0
+  Skills:
+    - damage{amount=25;ignoreArmor=false} @target
+    - effect:particles{particle=explosion_huge;amount=10;speed=1.0} @target
+    - sound{s=entity.generic.explode;volume=1.0;pitch=0.8} @target
+
+## Feiticeiro Arcano
+
+MisselArcano:
+  Cooldown: 8
+  Skills:
+    - damage{amount=10;ignoreArmor=false} @target
+    - effect:particles{particle=spell_witch;amount=20;speed=0.5} @target
+    - sound{s=entity.evoker.cast_spell;volume=1.0;pitch=0.8} @target
+
+EscudoMagico:
+  Cooldown: 25
+  Skills:
+    - potion{type=RESISTANCE;duration=120;level=2} @self
+    - effect:particles{particle=spell_instant;amount=30;speed=0.5} @self
+    - sound{s=entity.evoker.prepare_attack;volume=1.0;pitch=0.8} @self
+
+InvocacaoDeAliados:
+  Cooldown: 30
+  Skills:
+    - summon{mob=VEX;amount=2} @self
+    - effect:particles{particle=heart;amount=20;speed=0.5} @self
+    - sound{s=entity.evoker.prepare_wololo;volume=1.0;pitch=0.8} @self
+
+## Cavaleiro de Lava
+
+GolpeDeLava:
+  Cooldown: 7
+  Skills:
+    - damage{amount=14;ignoreArmor=false} @target
+    - potion{type=FIRE;duration=50;level=1} @target
+    - effect:particles{particle=lava;amount=20;speed=0.5} @target
+    - sound{s=entity.piglin.angry;volume=1.0;pitch=0.8} @target
+
+ArmaduraIgnea:
+  Cooldown: 20
+  Skills:
+    - potion{type=FIRE_RESISTANCE;duration=150;level=1} @self
+    - effect:particles{particle=flame;amount=30;speed=0.5} @self
+    - sound{s=block.lava.pop;volume=1.0;pitch=0.8} @self
+
+ExplosaoDeMagma:
+  Cooldown: 0
+  Skills:
+    - damage{amount=25;ignoreArmor=false} @target
+    - effect:particles{particle=explosion_large;amount=10;speed=1.0} @target
+    - sound{s=entity.generic.explode;volume=1.0;pitch=0.8} @target
+
+## Espírito da Floresta
+
+LancamentoDeLianas:
+  Cooldown: 6
+  Skills:
+    - damage{amount=10;ignoreArmor=false} @target
+    - potion{type=SLOW;duration=60;level=1} @target
+    - effect:particles{particle=villager_happy;amount=20;speed=0.5} @target
+    - sound{s=entity.vindicator.celebrate;volume=1.0;pitch=0.8} @target
+
+CuraNatural:
+  Cooldown: 25
+  Skills:
+    - heal{amount=20} @self
+    - effect:particles{particle=heart;amount=10;speed=0.5} @self
+    - sound{s=entity.vindicator.ambient;volume=1.0;pitch=0.8} @self
+
+InvocacaoDeRaizes:
+  Cooldown: 30
+  Skills:
+    - summon{mob=IRON_GOLEM;amount=1} @self
+    - effect:particles{particle=spell_mob;amount=30;speed=0.5} @self
+    - sound{s=entity.iron_golem.repair;volume=1.0;pitch=0.8} @self
+

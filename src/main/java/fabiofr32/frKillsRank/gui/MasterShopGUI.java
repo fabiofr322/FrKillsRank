@@ -28,8 +28,7 @@ public class MasterShopGUI implements Listener {
         }
         ItemStack closeItem = new ItemStack(Material.BARRIER);
         ItemMeta closeMeta = closeItem.getItemMeta();
-        closeMeta.setDisplayName(ConfigManager.getSimpleMessage("shop_gui.close_button"));
-        closeItem.setItemMeta(closeMeta);
+        closeMeta.setDisplayName(ConfigManager.getSimpleMessage("settings.shop_gui.close_button"));         closeItem.setItemMeta(closeMeta);
         gui.setItem(26, closeItem);
         player.openInventory(gui);
     }

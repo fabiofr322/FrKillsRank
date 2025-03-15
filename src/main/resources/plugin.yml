@@ -7,15 +7,9 @@ commands:
     description: Comando principal do FrKillsRank.
     usage: /frkillsrank <subcomando>
     aliases: [fkr]
-  recompensas:
-    description: Abra o menu de recompensas.
-    usage: /recompensas
   pointskills:
     description: Mostra quantos kills o jogador já fez.
     usage: /pointskills
-  pointsrank:
-    description: Mostra o rank do jogador.
-    usage: /pointsrank [nickname]
   pointsranktop:
     description: Mostra os 10 jogadores com mais pontos.
     usage: /pointsranktop
@@ -50,6 +44,9 @@ commands:
   pvplist:
     description: Ver player com PVP ONo u OFF
     usage: /pvplist
+  mobslist:
+    description: "Mostra a lista de mobs e seus pontos."
+    usage: "/mobslist"
 permissions:
   frloja.sell:
     description: "Permite adicionar itens à loja."

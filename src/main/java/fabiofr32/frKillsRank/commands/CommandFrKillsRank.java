@@ -18,7 +18,6 @@ public class CommandFrKillsRank implements CommandExecutor, TabCompleter {
     // Lista de subcomandos disponíveis, incluindo os novos comandos para pontos
     private final List<String> subcommands = Arrays.asList(
             "gui",
-            "recompensas",
             "pointskills",
             "pointsranktop",
             "reloadkillsconfig",
@@ -26,7 +25,9 @@ public class CommandFrKillsRank implements CommandExecutor, TabCompleter {
             "removepoints",
             "missions",
             "frloja",
-            "pvp"
+            "pvp",
+            "mobslist",
+            "pvplist"
     );
 
     @Override
@@ -64,8 +65,6 @@ public class CommandFrKillsRank implements CommandExecutor, TabCompleter {
 
             // Delegação para o comando específico
             switch (sub) {
-                case "recompensas":
-                    return new CommandRecompensas().onCommand(sender, command, label, newArgs);
                 case "pointskills":
                     return new CommandPointSkills().onCommand(sender, command, label, newArgs);
                 case "pointsranktop":
@@ -82,6 +81,8 @@ public class CommandFrKillsRank implements CommandExecutor, TabCompleter {
                     return new CommandShop().onCommand(sender, command, label, newArgs);
                 case "pvp":
                     return new CommandPvP().onCommand(sender, command, label, newArgs);
+                case "mobslist":
+                    return new MobsListCommand().onCommand(sender, command, label, newArgs);
                 // No switch do CommandFrKillsRank.java
                 case "gui":
                     MainGUI.openMainGUI(player);

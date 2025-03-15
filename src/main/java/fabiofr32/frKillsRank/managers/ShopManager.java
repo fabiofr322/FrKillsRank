@@ -188,8 +188,13 @@ public class ShopManager {
         if (price <= 0) return false;
         int playerPoints = ConfigManager.getPoints(player);
         if (playerPoints < price) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    ConfigManager.getSimpleMessage("settings.shop_gui.not_enough_points").replace("{price}", String.valueOf(price))));
+            player.sendMessage(ConfigManager.getMessage("setting.shop_gui.not_enough_points", player, price));
+            return false;
+        }
+
+        // Verifica se há espaço no inventário do jogador
+        if (player.getInventory().firstEmpty() == -1) {
+            player.sendMessage(ConfigManager.getSimpleMessage("settings.shop_gui.inventory_full"));
             return false;
         }
 
@@ -214,10 +219,12 @@ public class ShopManager {
         player.getInventory().addItem(itemCopy);
 
         // Mensagem de sucesso
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                ConfigManager.getSimpleMessage("settings.shop_gui.purchase_success")
-                        .replace("{item}", item.getItemMeta().getDisplayName())
-                        .replace("{price}", String.valueOf(price))));
+        String itemName = (meta != null && meta.hasDisplayName()) ? meta.getDisplayName() : item.getType().name();
+        String successMessage = ConfigManager.getMessage("shop_gui.purchase_success", player, price)
+                .replace("{item}", itemName)
+                .replace("{price}", String.valueOf(price));
+
+        player.sendMessage(successMessage);
         return true;
     }
 

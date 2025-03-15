@@ -3,6 +3,7 @@ package fabiofr32.frKillsRank.managers;
 import fabiofr32.frKillsRank.FrKillsRank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -10,10 +11,12 @@ import org.bukkit.entity.Player;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 public class ConfigManager {
 
     private static final HashMap<UUID, Integer> playerPoints = new HashMap<>();
     private static FileConfiguration config = FrKillsRank.getInstance().getConfig();
+    private static String currentTop1 = "";
 
     public static void reloadConfig() {
         FrKillsRank.getInstance().reloadConfig();
@@ -100,42 +103,22 @@ public class ConfigManager {
 
     public static int getPlayerRankingPosition(Player player) {
         int playerPts = getPoints(player);
+        int position = 1;
 
-        // Se o jogador tem pontos maiores que 0, usamos a lógica normal
-        if (playerPts > 0) {
-            int position = 1;
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (!p.equals(player) && getPoints(p) > playerPts) {
-                    position++;
-                }
-            }
-            return position;
-        } else {
-            // Se o jogador tem 0 pontos, verifica se existe alguém com mais de 0
-            boolean someoneHasMore = false;
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (!p.equals(player) && getPoints(p) > 0) {
-                    someoneHasMore = true;
-                    break;
-                }
-            }
-            if (someoneHasMore) {
-                // A posição do jogador com 0 pontos será: número de jogadores com >0 pontos + 1
-                int count = 0;
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (getPoints(p) > 0) {
-                        count++;
+        if (PlayerDataManager.getPlayerDataConfig().contains("players")) {
+            ConfigurationSection playersSection = PlayerDataManager.getPlayerDataConfig().getConfigurationSection("players");
+            for (String key : playersSection.getKeys(false)) {
+                // Ignora o próprio jogador (compara o UUID em formato de String)
+                if (!key.equals(player.getUniqueId().toString())) {
+                    int otherPoints = PlayerDataManager.getPlayerDataConfig().getInt("players." + key + ".points", 0);
+                    if (otherPoints > playerPts) {
+                        position++;
                     }
                 }
-                return count + 1;
-            } else {
-                // Se todos tiverem 0 pontos, a posição será 1
-                return 1;
             }
         }
+        return position;
     }
-
-
 
     // Método atualizado para utilizar a chave completa sem adicionar prefixos extras
     public static List<String> getMessageList(String key) {
@@ -168,6 +151,9 @@ public class ConfigManager {
         int currentPoints = 0;
 
         for (String rankName : ranksSection.getKeys(false)) {
+            // Ignora a chave "chat"
+            if (rankName.equalsIgnoreCase("chat")) continue;
+
             int requiredPoints = ranksSection.getInt(rankName);
             if (points >= requiredPoints && requiredPoints >= currentPoints) {
                 currentRank = rankName;
@@ -177,11 +163,77 @@ public class ConfigManager {
         return currentRank;
     }
 
-    public static void checkAndUpdateTop1(Player player) {
-        // Se o jogador for Top 1, ativamos o PvP automaticamente
-        if (getPlayerRankingPosition(player) == 1) {
-            PlayerDataManager.setPvP(player, true);
+    public static void checkAndUpdateTop1() {
+        OfflinePlayer topPlayer = getTopRankPlayerOffline();
+        if (topPlayer == null || topPlayer.getName() == null) return;
+
+        String newTop1 = topPlayer.getName();
+
+        // Se o Top 1 mudou (comparando de forma sensível a maiúsculas/minúsculas)
+        if (!newTop1.equals(currentTop1)) {
+            currentTop1 = newTop1; // Atualiza o Top 1
+
+            // Se o novo Top 1 estiver online, ativa o PvP para ele
+            if (topPlayer.isOnline()) {
+                Player onlineTop = (Player) topPlayer;
+                PlayerDataManager.setPvP(onlineTop, true);
+            }
+
+            // Envia a mensagem de broadcast se estiver habilitado nas configurações
+            if (config.getBoolean("settings.top1.enable", true)) {
+                String titleMessage = config.getString("settings.top1.broadcast_title", "&6🔥 {player} DOMINOU O RANK! 🔥");
+                String subtitleMessage = config.getString("settings.top1.broadcast_subtitle", "&e👑 O novo REI dos pontos foi coroado! 👑");
+
+                // Substitui o placeholder {player} pelo nome do novo Top 1
+                titleMessage = titleMessage.replace("{player}", newTop1);
+                subtitleMessage = subtitleMessage.replace("{player}", newTop1);
+
+                // Envia o título para todos os jogadores online
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    p.sendTitle(ChatColor.translateAlternateColorCodes('&', titleMessage),
+                            ChatColor.translateAlternateColorCodes('&', subtitleMessage),
+                            10, 70, 20);
+                }
+            }
         }
     }
+
+    public static Player getTopRankPlayer() {
+        Player topPlayer = null;
+        int highestPoints = 0;
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            int playerPoints = getPoints(p);
+            if (playerPoints > highestPoints) {
+                highestPoints = playerPoints;
+                topPlayer = p;
+            }
+        }
+        return topPlayer;
+    }
+
+    public static OfflinePlayer getTopRankPlayerOffline() {
+        if (PlayerDataManager.getPlayerDataConfig().contains("players")) {
+            ConfigurationSection playersSection = PlayerDataManager.getPlayerDataConfig().getConfigurationSection("players");
+            OfflinePlayer top = null;
+            int maxPoints = -1;
+            for (String key : playersSection.getKeys(false)) {
+                int points = PlayerDataManager.getPlayerDataConfig().getInt("players." + key + ".points", 0);
+                if (points > maxPoints) {
+                    maxPoints = points;
+                    try {
+                        UUID uuid = UUID.fromString(key);
+                        top = Bukkit.getOfflinePlayer(uuid);
+                    } catch (IllegalArgumentException e) {
+                        // Ignora chaves que não são UUID válidos
+                    }
+                }
+            }
+            return top;
+        }
+        return null;
+    }
+
+
 
 }

@@ -3,6 +3,9 @@ EspectroSombrio:
   Display: '&8&lEspectro Sombrio'
   Health: 200
   Damage: 15
+  Options:
+    MovementSpeed: 1.2
+    FollowRange: 32
   AITargetSelectors:
     - clear
     - players
@@ -12,8 +15,6 @@ EspectroSombrio:
     AlwaysAggro: true
     PreventOtherDrops: true
     PreventRandomEquipment: true
-    MovementSpeed: 1.2
-    FollowRange: 32
   Skills:
     - skill{s=EspectroAura} @target ~onCombat >0 0.2
     - skill{s=GolpeSombrio} @target ~onAttack 0.3
@@ -40,3 +41,188 @@ LoboSanguinario:
     - skill{s=UivoDeGuerra} @self ~onDamaged 0.2
   Drops:
     - dropsLoboSanguinario
+
+UrsoAncestral:
+  Type: POLAR_BEAR
+  Display: '&6&lUrso Ancestral'
+  Health: 250
+  Damage: 18
+  AITargetSelectors:
+    - clear
+    - players
+  Options:
+    AlwaysAggro: true
+    MovementSpeed: 0.4
+    KnockbackResistance: 0.5
+  Skills:
+    - skill{s=GarraAncestral} @target ~onAttack 0.4
+    - skill{s=RugidoDeFuria} @self ~onDamaged 0.2
+  Drops:
+    - dropsUrsoAncestral
+
+
+AranhaVenenosa:
+  Type: SPIDER
+  Display: '&2&lAranha Venenosa'
+  Health: 160
+  Damage: 8
+  AITargetSelectors:
+    - clear
+    - players
+  Options:
+    AlwaysAggro: true
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    MovementSpeed: 0.5
+    FollowRange: 20
+  Skills:
+    - skill{s=MordidaVenenosa} @target ~onAttack 0.3
+    - skill{s=TeiaPegajosa} @target ~onCombat >0 0.2
+  Drops:
+    - dropsAranhaVenenosa
+
+EsqueletoFlamejante:
+  Type: SKELETON
+  Display: '&c&lEsqueleto Flamejante'
+  Health: 200
+  Damage: 12
+  AITargetSelectors:
+    - clear
+    - players
+  Options:
+    AlwaysAggro: true
+    PreventSunburn: true
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    MovementSpeed: 0.3
+    FollowRange: 25
+  Skills:
+    - skill{s=FlechaFlamejante} @target ~onAttack 0.4
+    - skill{s=ExplosaoDeChamas} @target ~onDamaged 0.2
+  Drops:
+    - dropsEsqueletoFlamejante
+
+ZumbiDeGelo:
+  Type: ZOMBIE
+  Display: '&b&lZumbi de Gelo'
+  Health: 240
+  Damage: 10
+  AITargetSelectors:
+    - clear
+    - players
+  Options:
+    AlwaysAggro: true
+    PreventSunburn: true
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    MovementSpeed: 0.35
+    FollowRange: 18
+  Skills:
+    - skill{s=GolpeGelado} @target ~onAttack 0.3
+    - skill{s=AuraCongelante} @self ~onDamaged 0.2
+  Drops:
+    - dropsZumbiDeGelo
+
+EndermanSombrio:
+  Type: ENDERMAN
+  Display: '&8&lEnderman Sombrio'
+  Health: 150
+  Damage: 14
+  AITargetSelectors:
+    - clear
+    - players
+  Options:
+    AlwaysAggro: true
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    MovementSpeed: 0.3
+    FollowRange: 30
+  Skills:
+    - skill{s=TeletransporteSombrio} @self ~onDamaged 0.3
+    - skill{s=GolpeDasSombras} @target ~onAttack 0.4
+  Drops:
+    - dropsEndermanSombrio
+
+AssassinoDasSombras:
+  Type: HUSK
+  Display: '&8&lAssassino das Sombras'
+  Health: 120
+  Damage: 16
+  AITargetSelectors:
+    - clear
+    - players
+  Options:
+    AlwaysAggro: true
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    MovementSpeed: 0.35
+    FollowRange: 30
+  Skills:
+    - skill{s=GolpeFurtivo} @target ~onAttack 0.4
+    - skill{s=Invisibilidade} @self ~onDamaged 0.3
+    - skill{s=ExplosaoSombria} @target ~onDeath 1.0
+  Drops:
+    - dropsAssassinoDasSombras
+
+FeiticeiroArcano:
+  Type: EVOKER
+  Display: '&5&lFeiticeiro Arcano'
+  Health: 150
+  Damage: 10
+  AITargetSelectors:
+    - clear
+    - players
+  Options:
+    AlwaysAggro: true
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    MovementSpeed: 0.3
+    FollowRange: 25
+  Skills:
+    - skill{s=MisselArcano} @target ~onCombat >0 0.3
+    - skill{s=EscudoMagico} @self ~onDamaged 0.4
+    - skill{s=InvocacaoDeAliados} @self ~onLowHealth 0.5
+  Drops:
+    - dropsFeiticeiroArcano
+
+CavaleiroDeLava:
+  Type: PIGLIN_BRUTE
+  Display: '&c&lCavaleiro de Lava'
+  Health: 150
+  Damage: 12
+  AITargetSelectors:
+    - clear
+    - players
+  Options:
+    AlwaysAggro: true
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    MovementSpeed: 0.4
+    FollowRange: 28
+  Skills:
+    - skill{s=GolpeDeLava} @target ~onAttack 0.5
+    - skill{s=ArmaduraIgnea} @self ~onDamaged 0.3
+    - skill{s=ExplosaoDeMagma} @target ~onDeath 1.0
+  Drops:
+    - dropsCavaleiroDeLava
+
+EspiritoDaFloresta:
+  Type: VINDICATOR
+  Display: '&a&lEspírito da Floresta'
+  Health: 130
+  Damage: 16
+  AITargetSelectors:
+    - clear
+    - players
+  Options:
+    AlwaysAggro: true
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    MovementSpeed: 0.35
+    FollowRange: 22
+  Skills:
+    - skill{s=LancamentoDeLianas} @target ~onCombat >0 0.3
+    - skill{s=CuraNatural} @self ~onDamaged 0.4
+    - skill{s=InvocacaoDeRaizes} @target ~onLowHealth 0.5
+  Drops:
+    - dropsEspiritoDaFloresta

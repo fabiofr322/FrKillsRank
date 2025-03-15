@@ -2,19 +2,96 @@ EspectroSpawner:
   MobType: EspectroSombrio
   Worlds: world
   Chance: 0.001
+  Biomes: PLAINS,FOREST,SWAMP
   Priority: 1
-  Conditions:
-    - biome PLAINS,FOREST,SWAMP
   Cooldown: 1800
+  action: REPLACE
 
-  LoboSanguinarioSpawner:
-    MobType: LoboSanguinario
-    Worlds: world
-    Chance: 0.003
-    Priority: 1
-    Conditions:
-      - biome FOREST, TAIGA, DARK_FOREST
-    Cooldown: 1800
-    ActionRadius: 50
-    MaxMobs: 2
+LoboSanguinarioSpawner:
+  MobType: LoboSanguinario
+  Worlds: world
+  Chance: 0.003
+  Biomes: FOREST, TAIGA, DARK_FOREST
+  Priority: 1
+  Cooldown: 1800
+  action: REPLACE
 
+UrsoAncestralSpawner:
+  MobType: UrsoAncestral
+  Worlds: world
+  Chance: 0.002
+  Priority: 1
+  Biomes: SNOWY_TUNDRA,SNOWY_TAIGA,SNOWY_MOUNTAINS
+  Cooldown: 3600
+
+AranhaVenenosaSpawner:
+  MobType: AranhaVenenosa
+  Worlds: world
+  Chance: 0.002
+  Biomes: JUNGLE, SWAMP
+  Priority: 1
+  Cooldown: 1200
+  action: REPLACE
+
+EsqueletoFlamejanteSpawner:
+  MobType: EsqueletoFlamejante
+  Worlds: world,world_nether
+  Chance: 0.0015
+  Biomes: DESERT, NETHER_WASTES
+  Priority: 1
+  Cooldown: 1800
+  action: REPLACE
+
+ZumbiDeGeloSpawner:
+  MobType: ZumbiDeGelo
+  Worlds: world
+  Chance: 0.002
+  Biomes: SNOWY_TUNDRA, SNOWY_TAIGA
+  Priority: 1
+  Cooldown: 1500
+  action: REPLACE
+
+EndermanSombrioSpawner:
+  MobType: EndermanSombrio
+  Worlds: world_the_end
+  Chance: 0.001
+  Biomes: END_HIGHLANDS, END_MIDLANDS
+  Priority: 1
+  Cooldown: 2400
+  action: REPLACE
+
+AssassinoDasSombrasSpawner:
+  MobType: AssassinoDasSombras
+  Worlds: world
+  Chance: 0.002
+  Biomes: DESERT, BADLANDS
+  Priority: 1
+  Cooldown: 1800
+  action: REPLACE
+
+FeiticeiroArcanoSpawner:
+  MobType: FeiticeiroArcano
+  Worlds: world
+  Chance: 0.0015
+  Biomes: TAIGA, FOREST
+  Priority: 1
+  Cooldown: 2400
+  action: REPLACE
+
+CavaleiroDeLavaSpawner:
+  MobType: CavaleiroDeLava
+  Worlds: world_nether
+  Chance: 0.002
+  Biomes: NETHER_WASTES, BASALT_DELTAS
+  Priority: 1
+  Cooldown: 2000
+  action: REPLACE
+
+EspiritoDaFlorestaSpawner:
+  MobType: EspiritoDaFloresta
+  Worlds: world
+  Chance: 0.0015
+  Biomes: JUNGLE, BAMBOO_JUNGLE
+  Priority: 1
+  Cooldown: 2200
+  action: REPLACE

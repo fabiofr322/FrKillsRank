@@ -60,6 +60,8 @@ public final class FrKillsRank extends JavaPlugin {
         getCommand("implementmm").setExecutor(new MythicMobsCommand(this));
         getCommand("pvp").setExecutor(new CommandPvP());
         getCommand("pvplist").setExecutor(new CommandPvPList());
+        getCommand("mobslist").setExecutor(new MobsListCommand());
+
 
         // Registrar o comando principal (se aplicável)
         if (getCommand("frkillsrank") == null) {
@@ -72,6 +74,7 @@ public final class FrKillsRank extends JavaPlugin {
         if (KillCompetitionManager.eventEnabled) {
             KillCompetitionManager.startEvent();
         }
+
     }
 
     @Override
@@ -97,6 +100,7 @@ public final class FrKillsRank extends JavaPlugin {
         // Agendador para atualizar todas as tags a cada 10 segundos (200 ticks)
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             TagManager.updateAllTags();
+            TopRankManager.checkAndBroadcastTopRank();
         }, 0L, 1l);
     }
 }
