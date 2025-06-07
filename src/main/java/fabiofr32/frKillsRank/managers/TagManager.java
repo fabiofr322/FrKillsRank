@@ -1,6 +1,7 @@
 package fabiofr32.frKillsRank.managers;
 
 import org.bukkit.Bukkit;
+import fabiofr32.frKillsRank.FrKillsRank;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
@@ -8,13 +9,10 @@ import org.bukkit.scoreboard.Team;
 
 public class TagManager {
 
-    /**
-     * Atualiza a tag acima da cabeça do jogador SEM alterar o Scoreboard do Sidebar.
-     * Usa o Main Scoreboard para garantir que todos vejam a tag corretamente.
-     *
-     * @param player O jogador a ser atualizado.
-     */
     public static void updatePlayerTagOnScoreboard(Player target, Scoreboard scoreboard) {
+        boolean usarTags = FrKillsRank.getInstance().getConfig().getBoolean("settings.use_rank_tags", true);
+        if (!usarTags) return;
+
         String rank = ConfigManager.getRank(target);
         String rankColor = ConfigManager.getSimpleMessage("settings.ranks.chat." + rank);
         if (rankColor == null || rankColor.isEmpty()) {
@@ -22,7 +20,6 @@ public class TagManager {
         }
         rankColor = ChatColor.translateAlternateColorCodes('&', rankColor);
 
-        // Obtém ou cria a equipe no scoreboard específico
         Team team = scoreboard.getTeam(target.getName());
         if (team == null) {
             team = scoreboard.registerNewTeam(target.getName());
@@ -41,4 +38,19 @@ public class TagManager {
         }
     }
 
+    public static String formatChat(Player player, String mensagemOriginal) {
+        boolean usarTags = FrKillsRank.getInstance().getConfig().getBoolean("settings.use_rank_tags", true);
+        String tag = "";
+
+        if (usarTags) {
+            String rank = ConfigManager.getRank(player);
+            tag = ConfigManager.getSimpleMessage("settings.ranks.chat." + rank);
+            if (tag == null || tag.isEmpty()) {
+                tag = "&7[" + rank + "]";
+            }
+            tag = ChatColor.translateAlternateColorCodes('&', tag) + ChatColor.RESET + " ";
+        }
+
+        return tag + player.getName() + ": " + mensagemOriginal;
+    }
 }

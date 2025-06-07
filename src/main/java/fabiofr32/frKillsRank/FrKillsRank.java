@@ -1,11 +1,13 @@
 package fabiofr32.frKillsRank;
 
+import fabiofr32.frKillsRank.Items.Trident.TridenteCommand;
+import fabiofr32.frKillsRank.Items.Trident.TridenteDash;
+import fabiofr32.frKillsRank.Items.Trident.TridenteEffects;
+import fabiofr32.frKillsRank.Items.Trident.TridenteListener;
 import fabiofr32.frKillsRank.commands.*;
 import fabiofr32.frKillsRank.events.MobKillListener;
 import fabiofr32.frKillsRank.gui.*;
-import fabiofr32.frKillsRank.listeners.ChatListener;
-import fabiofr32.frKillsRank.listeners.PlayerDeathListener;
-import fabiofr32.frKillsRank.listeners.PvPListener;
+import fabiofr32.frKillsRank.listeners.*;
 import fabiofr32.frKillsRank.managers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,6 +26,7 @@ public final class FrKillsRank extends JavaPlugin {
         RewardsManager.loadRewards(); // Carrega as recompensas do rewards.yml
         Bukkit.getConsoleSender().sendMessage("§a[FrKillsRank] Plugin ativado!");
         startScoreboardUpdater(); // Inicia o loop de atualização do Scoreboard
+        PlayerDataManager.startPlayTimeUpdater();
         startTagUpdate();
 
         mythicMobsIntegrationManager = new MythicMobsIntegrationManager(this);
@@ -48,6 +51,10 @@ public final class FrKillsRank extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new PvPListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
+        getServer().getPluginManager().registerEvents(new CombatListener(), this);
+        getServer().getPluginManager().registerEvents(new PvPDeathListener(), this);
+
 
         getCommand("reloadkillsconfig").setExecutor(new CommandReloadConfig());
         //getCommand("recompensas").setExecutor(new CommandRecompensas());
@@ -61,6 +68,8 @@ public final class FrKillsRank extends JavaPlugin {
         getCommand("pvp").setExecutor(new CommandPvP());
         getCommand("pvplist").setExecutor(new CommandPvPList());
         getCommand("mobslist").setExecutor(new MobsListCommand());
+        this.getCommand("frstats").setExecutor(new FrStatsCommand());
+
 
 
         // Registrar o comando principal (se aplicável)
@@ -75,6 +84,17 @@ public final class FrKillsRank extends JavaPlugin {
             KillCompetitionManager.startEvent();
         }
 
+
+        getServer().getPluginManager().registerEvents(new StatsGUI(), this);
+        this.getCommand("frstatsgui").setExecutor(new FrStatsGuiCommand());
+
+
+        //Trident
+        Bukkit.getPluginManager().registerEvents(new TridenteListener(this), this);
+        this.getCommand("tridente").setExecutor(new TridenteCommand(this));
+        new TridenteEffects(this).start();
+        new TridenteDash(this).start();
+
     }
 
     @Override
@@ -86,15 +106,19 @@ public final class FrKillsRank extends JavaPlugin {
         return instance;
     }
 
-    private void startScoreboardUpdater() {
-        Bukkit.getScheduler().runTaskTimer(this, () -> {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (player.isOnline()) {
-                    ScoreboardManager.updateScoreboard(player);
-                }
+private void startScoreboardUpdater() {
+    Bukkit.getScheduler().runTaskTimer(this, () -> {
+        if (!getConfig().getBoolean("settings.scoreboard.enabled", true)) {
+            return; // Não atualiza o scoreboard se estiver desativado
+        }
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.isOnline()) {
+                ScoreboardManager.updateScoreboard(player);
             }
-        }, 0L, 20l);
-    }
+        }
+    }, 0L, 20L);
+}
 
     private void startTagUpdate() {
         // Agendador para atualizar todas as tags a cada 10 segundos (200 ticks)

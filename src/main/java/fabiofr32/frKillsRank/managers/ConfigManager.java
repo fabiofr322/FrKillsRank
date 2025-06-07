@@ -4,12 +4,18 @@ import fabiofr32.frKillsRank.FrKillsRank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Statistic;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import static fabiofr32.frKillsRank.managers.PlayerDataManager.getPlayerDataConfig;
+import static fabiofr32.frKillsRank.managers.PlayerDataManager.savePlayerData;
 
 
 public class ConfigManager {
@@ -19,9 +25,21 @@ public class ConfigManager {
     private static String currentTop1 = "";
 
     public static void reloadConfig() {
-        FrKillsRank.getInstance().reloadConfig();
-        config = FrKillsRank.getInstance().getConfig();
+        FrKillsRank plugin = FrKillsRank.getInstance();
+
+        // Recarrega o config atual do disco
+        plugin.reloadConfig();
+
+        // Copia valores padrão (do config.yml interno) para o arquivo se estiverem ausentes
+        plugin.getConfig().options().copyDefaults(true);
+
+        // Salva o config atualizado com os valores faltantes inseridos
+        plugin.saveConfig();
+
+        // Atualiza o cache interno
+        config = plugin.getConfig();
     }
+
 
     public static void addPoints(Player player, int points) {
         // Salva os pontos via PlayerDataManager
@@ -69,6 +87,16 @@ public class ConfigManager {
     public static void addKill(Player player) {
         // Incrementa a kill do jogador
         PlayerDataManager.addKill(player);
+
+        // Obtém o streak atual
+        int currentStreak = PlayerDataManager.getStreak(player);
+        int newStreak = currentStreak + 1;
+
+        PlayerDataManager.checkAndUpdateBestStreak(player, newStreak);
+
+        // Atualiza o streak
+        PlayerDataManager.setStreak(player, newStreak);
+
         // Atualiza o scoreboard com as novas informações, incluindo a posição
         ScoreboardManager.updateScoreboard(player);
     }
@@ -105,12 +133,12 @@ public class ConfigManager {
         int playerPts = getPoints(player);
         int position = 1;
 
-        if (PlayerDataManager.getPlayerDataConfig().contains("players")) {
-            ConfigurationSection playersSection = PlayerDataManager.getPlayerDataConfig().getConfigurationSection("players");
+        if (getPlayerDataConfig().contains("players")) {
+            ConfigurationSection playersSection = getPlayerDataConfig().getConfigurationSection("players");
             for (String key : playersSection.getKeys(false)) {
                 // Ignora o próprio jogador (compara o UUID em formato de String)
                 if (!key.equals(player.getUniqueId().toString())) {
-                    int otherPoints = PlayerDataManager.getPlayerDataConfig().getInt("players." + key + ".points", 0);
+                    int otherPoints = getPlayerDataConfig().getInt("players." + key + ".points", 0);
                     if (otherPoints > playerPts) {
                         position++;
                     }
@@ -213,12 +241,12 @@ public class ConfigManager {
     }
 
     public static OfflinePlayer getTopRankPlayerOffline() {
-        if (PlayerDataManager.getPlayerDataConfig().contains("players")) {
-            ConfigurationSection playersSection = PlayerDataManager.getPlayerDataConfig().getConfigurationSection("players");
+        if (getPlayerDataConfig().contains("players")) {
+            ConfigurationSection playersSection = getPlayerDataConfig().getConfigurationSection("players");
             OfflinePlayer top = null;
             int maxPoints = -1;
             for (String key : playersSection.getKeys(false)) {
-                int points = PlayerDataManager.getPlayerDataConfig().getInt("players." + key + ".points", 0);
+                int points = getPlayerDataConfig().getInt("players." + key + ".points", 0);
                 if (points > maxPoints) {
                     maxPoints = points;
                     try {
@@ -233,7 +261,6 @@ public class ConfigManager {
         }
         return null;
     }
-
 
 
 }

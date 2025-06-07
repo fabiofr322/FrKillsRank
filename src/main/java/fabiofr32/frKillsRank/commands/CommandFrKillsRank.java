@@ -27,7 +27,8 @@ public class CommandFrKillsRank implements CommandExecutor, TabCompleter {
             "frloja",
             "pvp",
             "mobslist",
-            "pvplist"
+            "pvplist",
+            "status"
     );
 
     @Override
@@ -83,6 +84,8 @@ public class CommandFrKillsRank implements CommandExecutor, TabCompleter {
                     return new CommandPvP().onCommand(sender, command, label, newArgs);
                 case "mobslist":
                     return new MobsListCommand().onCommand(sender, command, label, newArgs);
+                case "status":
+                    return new FrStatsCommand().onCommand(sender, command, label, newArgs);
                 // No switch do CommandFrKillsRank.java
                 case "gui":
                     MainGUI.openMainGUI(player);

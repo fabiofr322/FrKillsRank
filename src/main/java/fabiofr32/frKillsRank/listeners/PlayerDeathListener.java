@@ -1,5 +1,7 @@
 package fabiofr32.frKillsRank.listeners;
 
+import fabiofr32.frKillsRank.managers.PlayerDataManager;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -13,6 +15,19 @@ public class PlayerDeathListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player deceased = event.getEntity();
         Player killer = deceased.getKiller();
+        Player player = event.getEntity();
+
+        PlayerDataManager.addDeath(player);
+        PlayerDataManager.setLastDeath(player);
+
+        // Se o player foi morto em PvP, registra a kill e a morte
+        if (killer != null) {
+            PlayerDataManager.addPvPKill(killer);
+            PlayerDataManager.addPvPDeath(player);
+        }
+
+        // Resetar streak ao morrer
+        PlayerDataManager.resetStreak(player);
 
         // Obtém o rank do jogador morto e sua cor do config.yml
         String deceasedRank = ConfigManager.getRank(deceased);

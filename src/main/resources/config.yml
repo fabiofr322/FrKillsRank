@@ -1,3 +1,14 @@
+#################################################################
+#                                                               #
+#   █████▒█▀▀▀ █▀▀█ █▀▀▄ █▀▀█ █  █     █▀▀█ █▀▀▄ █▀▀▀ █▀▀ █  █   #
+#     █▒ █▀▀  █  █ █  █ █  █ █▀▀█     █  █ █  █ █▀▀  █▀▀ █▀▀█   #
+#   ▒▄█▄▒█▄▄▄ ▀▀▀▀ ▀▀▀  ▀▀▀▀ ▀  ▀     ▀▀▀▀ ▀▀▀  ▀▄▄▄ ▀▀▀ ▀  ▀   #
+#                                                               #
+#              CONFIGURAÇÃO OFICIAL - FR32 LEGENDS              #
+# ➤ Edite com cuidado; NÃO altere os nomes ou valores!          #
+#################################################################
+
+# --------------------- PONTOS POR MOB --------------------------
 settings:
   points:
     # Mobs Comuns (1 ponto - Fáceis de farmar)
@@ -17,6 +28,10 @@ settings:
     ZOMBIFIED_PIGLIN: 1
     HOGLIN: 1
     ENDERMAN: 1
+    ZOMBIE_VILLAGER: 1
+    ENDERMITE: 1
+    PIGLIN: 1
+    STRIDER: 1
 
     # Mobs Difíceis de Farmar (2 pontos)
     CAVE_SPIDER: 2
@@ -28,6 +43,8 @@ settings:
     RAVAGER: 2
     PIGLIN_BRUTE: 2
     ZOGLIN: 2
+    WITHER_SKELETON: 2
+    GHAST: 2
 
     # Bosses (Acima de 100 pontos)
     WITHER: 200
@@ -35,6 +52,10 @@ settings:
     ELDER_GUARDIAN: 100
     WARDEN: 100
 
+  # ---------------------- CONFIGURAÇÕES GERAIS ----------------------
+  use_rank_tags: true
+
+  # ---------------------- MENSAGENS GERAIS -------------------------
   messages:
     kill: "&aVocê ganhou {points} pontos! Total: {total_points}"
     reload: "&eConfiguração recarregada com sucesso!"
@@ -48,33 +69,41 @@ settings:
     top_player: "&a{position}º - {player}: {points} pontos"
     points_shop: "&eLoja de pontos em desenvolvimento."
     permission_denied: "&cVocê não tem permissão para executar esse comando!"
-    # Mensagens para os comandos de ADICIONAR pontos
+
+    # --- Mensagens para adicionar pontos ---
     addpoints_usage: "&cUso: /addpoints <player> <amount>"
     addpoints_success: "&aAdicionado {points} pontos para {player}."
     points_added: "&aVocê recebeu {points} pontos."
-    # Mensagens para os comandos de REMOVER pontos
+
+    # --- Mensagens para remover pontos ---
     removepoints_usage: "&cUso: /removepoints <player> <amount>"
     removepoints_success: "&aRemovido {points} pontos de {player}."
     removepoints_insufficient: "&cO jogador {player} não possui pontos suficientes para remover {points}."
     points_removed: "&cForam removidos {points} pontos de você."
-    # Mensagens de missões:
+
+    # --- Mensagens de Missões ---
     missions_header_daily: "&6=== Missões Diárias ==="
     missions_none_daily: "&cNenhuma missão diária disponível."
     missions_header_weekly: "&6=== Missões Semanais ==="
     missions_none_weekly: "&cNenhuma missão semanal disponível."
     missions_format: "&a{mission} - Mate {amount} de {target} para receber {reward} pontos."
-    #events
-    #competition kills
+
+    # --- Mensagens de Eventos (Competition Kills) ---
     event_start: "&aEvento {event_name} iniciado! Mate o máximo de mobs possível!"
     event_end: "&eEvento {event_name} encerrado! {player} venceu com {kills} kills e ganhou {reward} pontos!"
     event_end_no_winner: "&eEvento {event_name} encerrado! Nenhum participante."
     event_active: "&eEvento {event_name} ativo! Ninguém registrou kills ainda."
     event_leader: "&eEvento {event_name} ativo! Atual líder: {player} com {kills} kills."
+
+  # ---------------------- CONFIGURAÇÃO DO TOP 1 ----------------------
   top1:
     enable: true
     broadcast_title: "&6🔥 {player} DOMINOU O RANK! 🔥"
     broadcast_subtitle: "&e👑 O novo REI dos pontos foi coroado! 👑"
+
+  # ---------------------- SCOREBOARD ----------------------
   scoreboard:
+    enabled: true 
     title: "&6&lKillsRank"
     rank: "&6🏆 Rank: &a%rank%"
     kills: "&c💀 Kills: &f%kills%"
@@ -82,6 +111,8 @@ settings:
     position: "&b📌 Posição: &a%position%"
     pvp_status: "&d⚔ PvP: %status%"
     top_rank: "&6👑 Top 1: &c%top_rank%"
+
+  # ---------------------- CONFIGURAÇÃO DAS RECOMPENSAS ----------------------
   rewards:
     gui_title: "&6Recompensas Disponíveis"
     item_display: "&aRecompensa por {points} pontos!"
@@ -92,12 +123,98 @@ settings:
     item_reward: "&aVocê recebeu {amount}x {item}!"
     money_reward: "&aVocê recebeu ${money}!"
     command_reward: "&aVocê recebeu uma recompensa especial!"
+
+  # ---------------------- CONFIGURAÇÃO MYTHICMOBS ----------------------
   mythicmobs:
     prompt_message: "Verificamos que o MythicMobs está instalado em seu servidor. "
     prompt_clickable: "[Clique aqui para implementar]"
     prompt_hover: "Clique para adicionar os mobs especiais ao MythicMobs."
     implemented: "Mobs especiais implementados e MythicMobs recarregado."
+
   showMythicMobsPrompt: true
+
+  # ---------------------- CONFIGURAÇÃO DE ESTATÍSTICAS (frstats) ----------------------
+  frstats:
+    # --- Mensagens para o comando /frstats ---
+    text:
+      title: "&6=== Estatísticas de {player} ==="
+      totalPoints: "&aTotal de Pontos: &f{points}"
+      mobsKilled: "&aMobs Mortos: &f{kills}"
+      bestStreak: "&aMelhor Streak: &f{streak}"
+      lastMob: "&aÚltimo Mob Morto: &f{mob}"
+      bestKillstreak: "&aMaior Killstreak Registrado: &f{streak}"
+      mostKilledMob: "&aMob Mais Morto: &f{mob} (&e{kills} mortes&f)"
+      no_most_killed_mob: "&cNenhum mob morto ainda!"
+      deaths: "&cMortes Sofridas: &f{deaths}"
+      lastDeath: "&cÚltima Morte: &f{date}"
+      playTime: "&bTempo de Jogo: &f{hours}h {minutes}m {seconds}s"
+      pvpKills: "&cVitórias em PvP: &f{kills}"
+      pvpDeaths: "&cMortes em PvP: &f{deaths}"
+      kdRatio: "&aK/D Ratio: &f{ratio}"
+      highestDamage: "&bMaior Dano Causado: &f{damage}"
+      highestDamageTaken: "&cMaior Dano Recebido: &f{damage}"
+
+    # --- Configuração da GUI de Estatísticas (/frstatsgui) ---
+    gui:
+      guiTitle: "&6📊 Estatísticas de &e{player}"
+
+      totalPoints:
+        name: "&a⭐ Total de Pontos"
+        lore: "&7Você tem &e{value} &7pontos acumulados."
+      
+      mobsKilled:
+        name: "&c💀 Mobs Mortos"
+        lore: "&7Você eliminou &c{value} &7mobs no servidor."
+      
+      bestStreak:
+        name: "&6🔥 Melhor Streak"
+        lore: "&7Sua melhor sequência foi &6{value} &7mobs seguidos!"
+      
+      pvpKills:
+        name: "&4⚔ Vitórias em PvP"
+        lore: "&7Você derrotou &c{value} &7jogadores em combate."
+      
+      pvpDeaths:
+        name: "&8💀 Mortes em PvP"
+        lore: "&7Você morreu &8{value} &7vezes em PvP."
+      
+      kdRatio:
+        name: "&d📊 K/D Ratio"
+        lore: "&7Sua proporção de kills/mortes é &d{value}&7."
+      
+      highestDamage:
+        name: "&9🔨 Maior Dano Causado"
+        lore: "&7Seu maior golpe causou &9{value} &7de dano!"
+      
+      highestDamageTaken:
+        name: "&5🛡 Maior Dano Recebido"
+        lore: "&7O maior dano que você já sofreu foi &5{value}&7."
+      
+      playTime:
+        name: "&b⏳ Tempo de Jogo"
+        lore: "&7Você jogou por &b{value}&7."
+      
+      close:
+        name: "&c❌ Fechar"
+        lore: "&7Clique para fechar o menu."
+      
+      lastMob:
+        name: "&2🧟 Último Mob Morto"
+        lore: "&7Você matou recentemente um &2{value}&7."
+      
+      mostKilledMob:
+        name: "&6🔥 Mob Mais Morto"
+        lore: "&7Você matou &6{value} &7mais vezes que qualquer outro."
+      
+      deaths:
+        name: "&8☠️ Mortes Sofridas"
+        lore: "&7Você morreu &8{value} &7vezes no total."
+      
+      lastDeath:
+        name: "&7🪦 Última Morte"
+        lore: "&7Sua última morte foi em &f{value}&7."
+
+  # ---------------------- CONFIGURAÇÃO DE PvP ----------------------
   pvp:
     pvplist_header: "&e===== Lista de PvP ====="
     pvplist_pvp_on: "&a[PvP ON]: {players}"
@@ -108,9 +225,15 @@ settings:
     pvp_disabled_attacker: "&cVocê tem o PvP desativado e não pode atacar outros jogadores!"
     death_lost_points: "&cVocê perdeu {points} pontos por ter sido morto."
     death_gained_points: "&aVocê ganhou {points} pontos ao matar {player}."
+
+  # ---------------------- CONFIGURAÇÃO DAS GUIs ----------------------
   gui:
     main_title: "&6FrKillsRank Menu"
     player_head_name: "&aSeu Perfil"
+    stats_item_name: "&9📊 Estatísticas"
+    stats_item_lore:
+      - "&7Veja seu progresso completo!"
+      - "&eKills, PvP, tempo de jogo e mais"
     player_head_lore:
       - "Rank: {rank}"
       - "Pontos: {points}"
@@ -123,6 +246,8 @@ settings:
     missions_item_name: "&eMissões"
     missions_item_lore:
       - "Clique para ver as missões disponíveis."
+
+  # ---------------------- CONFIGURAÇÃO DA LOJA (shop_gui) ----------------------
   shop_gui:
     categories:
       consumables:
@@ -161,10 +286,14 @@ settings:
     purchase_success: "&aVocê comprou {item} por {price} pontos!"
     inventory_full: "&cSeu inventário está cheio! Libere espaço antes de comprar."
     close_button: "&cFechar Loja"
+
+  # ---------------------- CONFIGURAÇÃO DA LISTA DE MOBS ----------------------
   mob_list:
     no_data: "&cNenhuma informação de mobs encontrada."
     top_header: "&6===== 🏆 Lista de Mobs e Pontos 🏆 ====="
     top_footer: "&6================================="
+
+  # ---------------------- CONFIGURAÇÃO DOS RANKS ----------------------
   ranks:
     Lendário: 100000
     Mestre: 50000
@@ -177,6 +306,3 @@ settings:
       Guerreiro: "&c[Guerreiro]"
       Soldado: "&9[Soldado]"
       Iniciante: "&a[Iniciante]"
-
-
-

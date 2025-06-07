@@ -3,6 +3,8 @@ version: '1.0-SNAPSHOT'
 main: fabiofr32.frKillsRank.FrKillsRank
 api-version: '1.21'
 commands:
+  tridente:
+    description: Recebe o Tridente da Maré Eterna
   frkillsrank:
     description: Comando principal do FrKillsRank.
     usage: /frkillsrank <subcomando>
@@ -47,6 +49,19 @@ commands:
   mobslist:
     description: "Mostra a lista de mobs e seus pontos."
     usage: "/mobslist"
+  frstats:
+    description: "Mostra o status do jogador."
+    usage: "/frstats"
+
+  frstatsgui:
+    description: "Abre a GUI com suas estatísticas."
+    usage: "/frstatsgui"
+    permission: frkillsrank.statsgui
+
+  frduelo:
+    description: "Desafia outro jogador para um duelo por pontos."
+    usage: "/frduelo <player> <pontos> | /frduelo accept | /frduelo deny"
+
 permissions:
   frloja.sell:
     description: "Permite adicionar itens à loja."

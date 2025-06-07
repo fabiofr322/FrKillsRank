@@ -22,31 +22,26 @@ public class MainGUIListener implements Listener {
 
         int slot = event.getRawSlot();
         switch (slot) {
-            case 10:
-                // Cabeça do jogador: exibe mensagem de perfil
-                int points = FrKillsRank.getInstance().getConfig().getInt("players." + player.getUniqueId() + ".points", 0);
-                String rank;
-                if (points < 5000) {
-                    rank = "Iniciante";
-                } else if (points < 20000) {
-                    rank = "Guerreiro";
-                } else {
-                    rank = "Lendário";
-                }
-                player.sendMessage(ChatColor.GREEN + "Seu perfil: " + rank + " - " + points + " pontos.");
-                break;
-            case 12:
-                // Recompensas: abre o GUI de recompensas
+            case 21:
+                // Recompensas: abre o GUI de loja
                 ShopGUI.openMainShop(player);
                 break;
-            case 14:
+            case 22:
                 // Rank: executa o comando que mostra o rank (por exemplo, /pointsrank)
                 player.chat("/pointsranktop");
                 break;
-            case 16:
+            case 23:
+                // abre o menu de statisticas
+                StatsGUI.openStatsGUI(player);
+                break;
+            case 24:
                 // Missões: executa o comando que mostra as missões (por exemplo, /missions)
                 player.chat("/missions");
                 break;
+            case 40:
+            	// fechar menu
+            	player.closeInventory();
+            	break;
             default:
                 break;
         }
